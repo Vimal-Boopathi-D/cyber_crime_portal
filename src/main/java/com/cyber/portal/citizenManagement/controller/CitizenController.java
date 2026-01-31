@@ -28,3 +28,4 @@ public class CitizenController {
                         .body(ApiResponse.of(HttpStatus.NOT_FOUND, "Citizen not found", null)));
     }
 }
+
