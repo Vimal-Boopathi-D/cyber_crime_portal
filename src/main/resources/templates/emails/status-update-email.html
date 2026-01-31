@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Complaint Status Update</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; margin: 0; padding: 0; }
+        .container { max-width: 600px; margin: 20px auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .header { background-color: #1a237e; color: #ffffff; padding: 20px; text-align: center; }
+        .content { padding: 30px; line-height: 1.6; color: #333; }
+        .footer { background-color: #f1f1f1; color: #777; padding: 15px; text-align: center; font-size: 12px; }
+        .btn { display: inline-block; padding: 12px 25px; background-color: #283593; color: #ffffff !important; text-decoration: none; border-radius: 5px; font-weight: bold; margin-top: 20px; }
+        .info-box { background-color: #e8eaf6; padding: 15px; border-radius: 5px; margin: 20px 0; }
+        .status-badge { display: inline-block; padding: 5px 12px; border-radius: 20px; background-color: #ffd600; color: #000; font-weight: bold; font-size: 14px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Cyber Portal</h1>
+            <p>Official Complaint Update</p>
+        </div>
+        <div class="content">
+            <p>Dear <span th:text="${citizenName}">Citizen</span>,</p>
+            <p>There has been a status update on your cybercrime complaint.</p>
+            
+            <div class="info-box">
+                <p><strong>Acknowledgement No:</strong> <span th:text="${ackNo}">ACK-XXXXX</span></p>
+                <p><strong>Current Status:</strong> <span class="status-badge" th:text="${status}">UNDER INVESTIGATION</span></p>
+                <p><strong>Last Updated:</strong> <span th:text="${#temporals.format(updatedAt, 'dd-MMM-yyyy HH:mm')}">Date</span></p>
+            </div>
+
+            <p><strong>Remarks from Officer:</strong></p>
+            <p th:text="${remarks}">Additional details regarding the status update will appear here.</p>
+
+            <p>You can track the live progress and download the full report by clicking the button below:</p>
+            <a th:href="@{https://cybercrime.gov.in/track/{ack}(ack=${ackNo})}" class="btn">Track Complaint Live</a>
+
+            <p>If you have any questions, please contact our 24/7 helpline at <strong>1930</strong>.</p>
+            <p>Stay Safe,<br><strong>Cyber Coordination Centre</strong></p>
+        </div>
+        <div class="footer">
+            &copy; 2026 National Cyber Crime Reporting Portal. This is an automated notification.
+        </div>
+    </div>
+</body>
+</html>
