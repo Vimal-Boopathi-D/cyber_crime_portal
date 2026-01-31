@@ -1,6 +1,7 @@
 package com.cyber.portal.complaintAndFirManagement.entity;
 
 import com.cyber.portal.citizenManagement.entity.Citizen;
+import com.cyber.portal.sharedResources.enums.ComplaintCategory;
 import com.cyber.portal.sharedResources.enums.IncidentStatus;
 import com.cyber.portal.sharedResources.enums.State;
 import jakarta.persistence.*;
@@ -23,7 +24,10 @@ public class Complaint {
     @Column(unique = true, nullable = false)
     private String acknowledgementNo;
 
-    private String category;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private ComplaintCategory category;
+
     private LocalDateTime incidentDate;
     
     @Column(columnDefinition = "TEXT")
