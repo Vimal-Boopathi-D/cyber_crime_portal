@@ -6,4 +6,5 @@ public interface DocumentService {
     byte[] generateComplaintReport(Long complaintId);
     byte[] getFIRCopy(Long complaintId);
     FIR uploadFIR(Long complaintId, String firNo, String officerName);
+    byte[] generateCitizenComplaintExcel(Long citizenId);
 }
