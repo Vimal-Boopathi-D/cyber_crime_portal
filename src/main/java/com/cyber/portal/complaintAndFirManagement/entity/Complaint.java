@@ -36,6 +36,8 @@ public class Complaint {
     @Column(columnDefinition = "TEXT")
     private String additionalInfo;
 
+    private String incidentLocation;
+
     @Enumerated(EnumType.STRING)
     private State state;
     private String district;
@@ -47,6 +49,9 @@ public class Complaint {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "citizen_id")
     private Citizen citizen;
+
+    @OneToOne(mappedBy = "complaint", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private FIR fir;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
