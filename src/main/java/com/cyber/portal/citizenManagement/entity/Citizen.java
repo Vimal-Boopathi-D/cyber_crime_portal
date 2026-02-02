@@ -1,5 +1,6 @@
 package com.cyber.portal.citizenManagement.entity;
 
+import com.cyber.portal.citizenManagement.enums.UserRole;
 import com.cyber.portal.sharedResources.enums.Gender;
 import jakarta.persistence.*;
 import lombok.*;
@@ -19,9 +20,6 @@ public class Citizen {
     private Long id;
 
     @Column(unique = true, nullable = false)
-    private String loginId;
-
-    @Column(unique = true, nullable = false)
     private String mobileNo;
 
     @Column(nullable = false)
@@ -30,8 +28,14 @@ public class Citizen {
     @Column(unique = true)
     private String email;
 
+    @Column
+    private String password;
+
     @Enumerated(EnumType.STRING)
     private Gender gender;
+
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
 
     private String address;
 
