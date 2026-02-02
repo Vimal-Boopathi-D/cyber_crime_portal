@@ -1,5 +1,6 @@
 package com.cyber.portal.complaintAndFirManagement.entity;
 
+import com.cyber.portal.citizenManagement.entity.PoliceOfficer;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -24,8 +25,11 @@ public class FIR {
     @JoinColumn(name = "complaint_id", nullable = false)
     private Complaint complaint;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "generated_by", nullable = false)
+    private PoliceOfficer generatedBy;
+
     private LocalDateTime generatedAt;
-    private String generatedBy;
     private String filePath;
 
     @PrePersist
