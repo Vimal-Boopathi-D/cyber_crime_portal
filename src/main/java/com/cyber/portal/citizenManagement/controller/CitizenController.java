@@ -1,6 +1,7 @@
 package com.cyber.portal.citizenManagement.controller;
 
 import com.cyber.portal.citizenManagement.entity.Citizen;
+import com.cyber.portal.citizenManagement.entity.PoliceOfficer;
 import com.cyber.portal.citizenManagement.entity.PoliceStation;
 import com.cyber.portal.citizenManagement.service.CitizenService;
 import com.cyber.portal.sharedResources.dto.ApiResponse;
@@ -34,13 +35,16 @@ public class CitizenController {
                         .body(ApiResponse.of(HttpStatus.NOT_FOUND, "Citizen not found", null)));
     }
 
-//    @GetMapping()
-//    public ResponseEntity<ApiResponse<List<PoliceStation>>> getAllPoliceStations(){
-//        List<PoliceStation> stations = citizenService.getAllPoliceStation();
-//
-//        return ResponseEntity.ok(
-//                ApiResponse.success("",stations)
-//        );
-//    }
+    @GetMapping("/stations")
+    public ResponseEntity<ApiResponse<List<PoliceStation>>> getAllPoliceStations(){
+        List<PoliceStation> stations = citizenService.getAllPoliceStation();
+        return ResponseEntity.ok(ApiResponse.of(HttpStatus.OK, "Fetched all policeStations", stations));
+    }
+
+    @GetMapping("/officers")
+    public ResponseEntity<ApiResponse<List<PoliceOfficer>>> getAllPoliceOfficers(){
+        List<PoliceOfficer> officers = citizenService.getAllPoliceOfficers();
+        return ResponseEntity.ok(ApiResponse.of(HttpStatus.OK, "Fetched all policeOfficers", officers));
+    }
 }
 
