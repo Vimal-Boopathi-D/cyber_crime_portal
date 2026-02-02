@@ -46,7 +46,7 @@ public class ComplaintController {
 
     @GetMapping("/{id}/ai-tracking")
     public ResponseEntity<ApiResponse<Map<String, String>>> getAITracking(@PathVariable Long id) {
-        return complaintService.trackById(id) // I need to add trackById to ComplaintService
+        return complaintService.trackById(id)
                 .map(complaint -> ResponseEntity.ok(ApiResponse.of(HttpStatus.OK, "AI prediction retrieved", aiTrackingService.getPredictiveUpdate(complaint.getStatus()))))
                 .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body(ApiResponse.of(HttpStatus.NOT_FOUND, "Complaint not found", null)));
     }
