@@ -17,37 +17,49 @@ public class DocumentController {
 
     @GetMapping("/complaint-report/{complaintId}")
     public ResponseEntity<byte[]> downloadReport(@PathVariable Long complaintId) {
-        byte[] content = documentService.generateComplaintReport(complaintId);
+
+        byte[] pdfBytes = documentService.generateComplaintReport(complaintId);
+
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=complaint-report.pdf")
                 .contentType(MediaType.APPLICATION_PDF)
-                .body(content);
+                .header(
+                        HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment; filename=Complaint_Report_" + complaintId + ".pdf"
+                )
+                .contentLength(pdfBytes.length)
+                .body(pdfBytes);
     }
+
 
     @GetMapping("/fir/{complaintId}")
     public ResponseEntity<byte[]> downloadFIR(@PathVariable Long complaintId) {
-        byte[] content = documentService.getFIRCopy(complaintId);
+
+        byte[] pdfBytes = documentService.getFIRCopy(complaintId);
+
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=fir.pdf")
                 .contentType(MediaType.APPLICATION_PDF)
-                .body(content);
+                .header(
+                        HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment; filename=FIR_" + complaintId + ".pdf"
+                )
+                .contentLength(pdfBytes.length)
+                .body(pdfBytes);
     }
 
-    @GetMapping("/citizen/{id}/complaints/excel")
-    public ResponseEntity<byte[]> downloadComplaintExcel(@PathVariable Long id) {
 
-        byte[] excel =
-                documentService.generateCitizenComplaintExcel(id);
+    @GetMapping("/citizen/complaints/excel")
+    public ResponseEntity<byte[]> downloadCitizenComplaintsExcel(
+            @RequestParam(required = false) Long citizenId) {
+
+        byte[] excelData =
+                documentService.generateCitizenComplaintExcel(citizenId);
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION,
-                        "attachment; filename=citizen_complaints.xlsx")
-                .contentType(
-                        MediaType.parseMediaType(
-                                "application/vnd.malformations-office document.spreadsheet.sheet"
-                        )
-                )
-                .body(excel);
+                        "attachment; filename=citizen-complaints.xlsx")
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .contentLength(excelData.length)
+                .body(excelData);
     }
 
 }

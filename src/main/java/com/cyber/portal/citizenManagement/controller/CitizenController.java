@@ -27,7 +27,7 @@ public class CitizenController {
         return ResponseEntity.ok(ApiResponse.of(HttpStatus.OK, "Citizen registered successfully", saved));
     }
 
-    @GetMapping("/login")
+    @PostMapping("/login")
     public ResponseEntity<ApiResponse<Citizen>> getCitizen(@RequestParam String email, @RequestParam String password) {
         return citizenService.getCitizenByLoginId(email, password)
                 .map(citizen -> ResponseEntity.ok(ApiResponse.of(HttpStatus.OK, "Citizen found", citizen)))
