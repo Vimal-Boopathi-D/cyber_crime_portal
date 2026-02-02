@@ -32,4 +32,22 @@ public class DocumentController {
                 .contentType(MediaType.APPLICATION_PDF)
                 .body(content);
     }
+
+    @GetMapping("/citizen/{id}/complaints/excel")
+    public ResponseEntity<byte[]> downloadComplaintExcel(@PathVariable Long id) {
+
+        byte[] excel =
+                documentService.generateCitizenComplaintExcel(id);
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment; filename=citizen_complaints.xlsx")
+                .contentType(
+                        MediaType.parseMediaType(
+                                "application/vnd.malformations-office document.spreadsheet.sheet"
+                        )
+                )
+                .body(excel);
+    }
+
 }

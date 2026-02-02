@@ -33,6 +33,8 @@ public class Citizen {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
+    private String address;
+
     private LocalDateTime registeredAt;
 
     @PrePersist

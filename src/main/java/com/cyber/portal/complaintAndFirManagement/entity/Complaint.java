@@ -1,6 +1,7 @@
 package com.cyber.portal.complaintAndFirManagement.entity;
 
 import com.cyber.portal.citizenManagement.entity.Citizen;
+import com.cyber.portal.sharedResources.enums.ComplaintCategory;
 import com.cyber.portal.sharedResources.enums.IncidentStatus;
 import com.cyber.portal.sharedResources.enums.State;
 import jakarta.persistence.*;
@@ -23,7 +24,10 @@ public class Complaint {
     @Column(unique = true, nullable = false)
     private String acknowledgementNo;
 
-    private String category;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private ComplaintCategory category;
+
     private LocalDateTime incidentDate;
     
     @Column(columnDefinition = "TEXT")
@@ -31,6 +35,8 @@ public class Complaint {
     
     @Column(columnDefinition = "TEXT")
     private String additionalInfo;
+
+    private String incidentLocation;
 
     @Enumerated(EnumType.STRING)
     private State state;
@@ -43,6 +49,9 @@ public class Complaint {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "citizen_id")
     private Citizen citizen;
+
+    @OneToOne(mappedBy = "complaint", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private FIR fir;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
