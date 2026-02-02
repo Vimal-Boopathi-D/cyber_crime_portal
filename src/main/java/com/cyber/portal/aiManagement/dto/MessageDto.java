@@ -1,0 +1,17 @@
+package com.cyber.portal.aiManagement.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+public class MessageDto {
+    private String message;
+
+    public MessageDto() {
+    }
+
+    public MessageDto(String message) {
+        this.message = message;
+    }
+}

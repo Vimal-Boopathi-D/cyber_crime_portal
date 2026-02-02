@@ -1,0 +1,198 @@
+NATIONAL CYBERCRIME REPORTING PORTAL – DETAILED INFORMATION
+
+The National Cybercrime Reporting Portal (https://cybercrime.gov.in) is an official Government of India platform developed under the Ministry of Home Affairs (MHA). It operates through the Indian Cybercrime Coordination Centre (I4C) and serves as a centralized online system for reporting cybercrime incidents across India.
+
+The portal was launched to provide citizens with a simple, secure, and accessible way to report cybercrime complaints online without the need to physically visit a police station. It enables quick reporting, tracking, and routing of cybercrime complaints to appropriate law enforcement agencies.
+
+--------------------------------------------------
+PURPOSE AND OBJECTIVES
+--------------------------------------------------
+
+The primary purpose of the National Cybercrime Reporting Portal is to:
+- Enable citizens to report cybercrime incidents online
+- Provide a centralized system for cybercrime complaints across India
+- Assist law enforcement agencies in faster response and investigation
+- Create awareness and support victims of cybercrime
+- Reduce financial losses through quick reporting
+- Encourage reporting of crimes against women and children
+
+The portal focuses on making cybercrime reporting transparent, traceable, and efficient while maintaining user privacy and data security.
+
+--------------------------------------------------
+TYPES OF CYBERCRIMES THAT CAN BE REPORTED
+--------------------------------------------------
+
+The portal allows reporting of a wide range of cybercrime categories, including but not limited to:
+
+1. Financial Cybercrimes
+   - Online fraud
+   - UPI fraud
+   - Credit card and debit card fraud
+   - Internet banking fraud
+   - Cryptocurrency scams
+   - Investment scams
+   - Lottery and job frauds
+
+2. Social Media Related Crimes
+   - Cyberbullying
+   - Online harassment
+   - Fake profiles
+   - Identity theft
+   - Impersonation
+   - Defamation
+   - Stalking
+
+3. Crimes Against Women and Children
+   - Child sexual abuse material (CSAM)
+   - Online exploitation
+   - Revenge pornography
+   - Sextortion
+   - Cyber harassment targeting women
+   - Online grooming
+
+4. Technical Cybercrimes
+   - Hacking
+   - Unauthorized access
+   - Data theft
+   - Website defacement
+   - Malware attacks
+   - Ransomware attacks
+   - Phishing attacks
+
+--------------------------------------------------
+COMPLAINT REPORTING MODES
+--------------------------------------------------
+
+The portal supports two primary complaint reporting modes:
+
+1. Report and Track Complaint
+   - Users provide personal details such as name, mobile number, and email
+   - A detailed description of the cybercrime incident is submitted
+   - Users receive a unique complaint ID
+   - The complaint can be tracked using the complaint ID
+
+2. Anonymous Reporting
+   - Available mainly for crimes against women and children
+   - No personal details of the complainant are required
+   - Identity of the reporter remains confidential
+   - Suitable for sensitive cases
+
+--------------------------------------------------
+STEP-BY-STEP COMPLAINT PROCESS
+--------------------------------------------------
+
+1. User visits the National Cybercrime Reporting Portal
+2. Selects the type of cybercrime to report
+3. Chooses between anonymous reporting or report and track
+4. Fills in incident details such as:
+   - Date and time of incident
+   - Description of the incident
+   - Suspected platform or medium
+   - Financial transaction details if applicable
+5. Uploads supporting evidence such as:
+   - Screenshots
+   - Bank statements
+   - Chat logs
+   - URLs
+6. Submits the complaint
+7. Receives a unique complaint ID
+8. Tracks the complaint status online
+
+--------------------------------------------------
+COMPLAINT TRACKING AND STATUS
+--------------------------------------------------
+
+After submission, each complaint is assigned a unique complaint ID. Users can track the progress of their complaint through the portal by entering the complaint ID and registered mobile number.
+Complaint Statuses (Detailed)
+
+Complaint statuses on the Cybercrime Reporting Portal may include the following:
+
+1.Submitted
+The complaint has been successfully registered on the portal and is awaiting initial processing.
+
+2.Received
+The complaint has been received by the cybercrime system and queued for verification.
+
+3.Under verification
+The details and evidence provided in the complaint are being verified by the cybercrime team. Additional information may be requested if required.
+
+4.Evidence verified
+The submitted evidence has been reviewed and found sufficient for further action.
+
+5.Assigned to police
+The complaint has been forwarded to the concerned cyber police station for further processing.
+
+6.FIR generated
+A First Information Report (FIR) has been registered by the police based on the complaint.
+
+7.Investigation in progress
+The cyber police are actively investigating the complaint. This stage may take time depending on the nature of the case.
+
+8.Follow-up required
+Additional clarification or documents are required from the complainant to proceed with the investigation.
+
+9.Resolved
+The complaint has been addressed and necessary actions have been completed.
+
+Closed
+The complaint has been formally closed after review or resolution. For further details, the concerned police station may be contacted.
+--------------------------------------------------
+ROLE OF LAW ENFORCEMENT
+--------------------------------------------------
+
+The National Cybercrime Reporting Portal itself does not register FIRs directly. Once a complaint is submitted:
+- The complaint is routed to the appropriate State or District Cyber Crime Cell
+- Local police authorities review the complaint
+- FIR registration and investigation are handled by law enforcement agencies
+- Necessary legal actions are taken under applicable IT and IPC laws
+
+--------------------------------------------------
+CYBERCRIME HELPLINE – 1930
+--------------------------------------------------
+
+The portal is integrated with the national cybercrime helpline number 1930.
+
+Key points about the helpline:
+- Available across India
+- Designed mainly for financial cyber fraud cases
+- Helps in quick reporting to reduce financial loss
+- Works in coordination with banks and police departments
+- Recommended to call immediately after detecting fraud
+
+--------------------------------------------------
+SECURITY AND PRIVACY
+--------------------------------------------------
+
+The portal follows strict data security and privacy standards:
+- User information is protected and securely stored
+- Anonymous complaints do not reveal personal identity
+- Access to complaint data is limited to authorized officials
+- Designed to comply with government cybersecurity guidelines
+
+--------------------------------------------------
+LIMITATIONS AND IMPORTANT NOTES
+--------------------------------------------------
+
+- The portal does not guarantee immediate recovery of lost money
+- FIR registration depends on police jurisdiction and verification
+- Technical issues such as slow loading or timeout may occur
+- In urgent cases, users are advised to call 1930 or visit the nearest cyber police station
+- Submission of false complaints may lead to legal consequences
+
+--------------------------------------------------
+IMPORTANCE OF TIMELY REPORTING
+--------------------------------------------------
+
+Early reporting significantly improves the chances of:
+- Blocking fraudulent transactions
+- Tracing perpetrators
+- Preventing further financial loss
+- Protecting other potential victims
+
+Citizens are strongly advised to report cybercrime incidents as soon as possible.
+
+--------------------------------------------------
+SUMMARY
+--------------------------------------------------
+
+The National Cybercrime Reporting Portal is India’s primary digital platform for reporting cybercrime. It plays a crucial role in combating cybercrime by enabling citizens to report incidents easily, assisting law enforcement agencies, and promoting cybersecurity awareness. Through its online complaint system, anonymous reporting features, and integration with the 1930 helpline, the portal strengthens India’s cybercrime response infrastructure.
