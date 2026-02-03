@@ -1,6 +1,7 @@
 package com.cyber.portal.citizenManagement.controller;
 
 import com.cyber.portal.citizenManagement.dto.ComplaintHistoryDto;
+import com.cyber.portal.citizenManagement.dto.LoginDto;
 import com.cyber.portal.citizenManagement.entity.Citizen;
 import com.cyber.portal.citizenManagement.entity.PoliceOfficer;
 import com.cyber.portal.citizenManagement.entity.PoliceStation;
@@ -32,8 +33,8 @@ public class CitizenController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<ApiResponse<Citizen>> getCitizen(@RequestParam String email, @RequestParam String password) {
-        return citizenService.getCitizenByLoginId(email, password)
+    public ResponseEntity<ApiResponse<Citizen>> getCitizen(@RequestBody LoginDto loginDto) {
+        return citizenService.getCitizenByLoginId(loginDto.getEmail(), loginDto.getPassword())
                 .map(citizen -> ResponseEntity.ok(ApiResponse.of(HttpStatus.OK, "Citizen found", citizen)))
                 .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND)
                         .body(ApiResponse.of(HttpStatus.NOT_FOUND, "Citizen not found", null)));
