@@ -4,9 +4,12 @@ public enum SuspectIdentifierType {
     MOBILE("Mobile"),
     EMAIL("Email"),
     BANK_ACCOUNT("Bank Account"),
-    UPI_ID("UPI Id"),
+    WEBSITE_URL("Website Url"),
+    WHATSAPP("Whatsapp"),
+    TELEGRAM("Telegram"),
+    SMS_HEADER("SMS Header"),
     SOCIAL_MEDIA("Social Media"),
-    WEBSITE_APP("Website App");
+    MOBILE_APP("Mobile App");
 
     public final String type;
 
@@ -20,7 +23,6 @@ public enum SuspectIdentifierType {
     public String gettype(){
         return type;
     }
-
 
 
 
