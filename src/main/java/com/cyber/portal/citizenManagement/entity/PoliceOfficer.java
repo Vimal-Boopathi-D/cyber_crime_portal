@@ -20,7 +20,7 @@ public class PoliceOfficer {
      * One-to-One mapping with User table
      * officer_id is both PK and FK
      */
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @MapsId
     @JoinColumn(name = "officer_id")
     private Citizen citizen;
@@ -28,7 +28,7 @@ public class PoliceOfficer {
     @Column(name = "badge_number", unique = true, nullable = false)
     private String badgeNumber;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "station_id")
     private PoliceStation policeStation;
 

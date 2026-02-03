@@ -5,7 +5,8 @@ public enum ComplaintCategory {
     SOCIAL_MEDIA_ABUSE("Social Media Issue"),
     BANKING_FRAUD("Banking fraud"),
     CYBER_BULLYING("Cyber Bullying"),
-    HACKING("Hacking");
+    HACKING("Hacking"),
+    OTHER_CYBERCRIME("other cybercrime");
 
 private final String category;
 

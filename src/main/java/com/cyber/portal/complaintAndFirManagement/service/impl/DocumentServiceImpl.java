@@ -297,24 +297,23 @@ public class DocumentServiceImpl implements DocumentService {
 
     @Override
     @Transactional
-    public FIR uploadFIR(Long complaintId, String firNo, String officerId) {
+    public void uploadFIR(Long complaintId, String firNo, Long officerId) {
         Complaint complaint = complaintRepository.findById(complaintId)
                 .orElseThrow(() -> new PortalException("Complaint not found", HttpStatus.NOT_FOUND));
 
-        PoliceOfficer policeOfficer = policeOfficerRepository.findById(complaintId)
+        PoliceOfficer policeOfficer = policeOfficerRepository.findById(officerId)
                 .orElseThrow(() -> new PortalException("Complaint not found", HttpStatus.NOT_FOUND));
         
         FIR fir = FIR.builder()
                 .firNo(firNo)
                 .complaint(complaint)
                 .generatedBy(policeOfficer)
-                .filePath("/uploads/fir/" + firNo + ".pdf")
                 .build();
         
         complaint.setStatus(IncidentStatus.FIR_GENERATED);
         complaintRepository.save(complaint);
         
-        return firRepository.save(fir);
+         firRepository.save(fir);
     }
 
     @Override
