@@ -1,5 +1,6 @@
 package com.cyber.portal.volunteerManagement.entity;
 
+import com.cyber.portal.sharedResources.enums.VolunteerStatus;
 import com.cyber.portal.sharedResources.enums.VolunteerType;
 import jakarta.persistence.*;
 import lombok.*;
@@ -29,6 +30,11 @@ public class Volunteer {
     @Column(nullable = false, length = 15)
     private String mobileNo;
 
+    @Enumerated(EnumType.STRING)
+    private VolunteerStatus status;
+
+    @Enumerated(EnumType.STRING)
+    private VolunteerType type;
     @Column(nullable = false)
     private String email;
 

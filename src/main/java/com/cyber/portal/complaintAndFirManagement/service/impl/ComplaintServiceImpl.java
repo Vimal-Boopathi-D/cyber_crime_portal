@@ -132,6 +132,15 @@ public class ComplaintServiceImpl implements ComplaintService {
         return complaintRepository.findById(id);
     }
 
+    @Override
+    public List<Complaint> getComplaints(Long citizenId) {
+        if (citizenId == null) {
+            return complaintRepository.findAll();
+        }else {
+            return complaintRepository.findByCitizenId(citizenId);
+        }
+    }
+
     private void saveTimeline(Complaint c, IncidentStatus s, String r, String u) {
         timelineRepository.save(ComplaintTimeline.builder()
                 .complaint(c).status(s).remarks(r).updatedBy(u).build());

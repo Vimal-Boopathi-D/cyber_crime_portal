@@ -1,6 +1,7 @@
 package com.cyber.portal.volunteerManagement.service.impl;
 
 import com.cyber.portal.volunteerManagement.dto.VolunteerRegistrationDto;
+import com.cyber.portal.sharedResources.enums.VolunteerStatus;
 import com.cyber.portal.volunteerManagement.entity.Volunteer;
 import com.cyber.portal.volunteerManagement.repository.VolunteerRepository;
 import com.cyber.portal.volunteerManagement.service.VolunteerService;
@@ -14,10 +15,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.UUID;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class VolunteerServiceImpl implements VolunteerService{
+public class VolunteerServiceImpl implements VolunteerService {
 
     private final VolunteerRepository volunteerRepository;
 
@@ -77,5 +79,8 @@ public class VolunteerServiceImpl implements VolunteerService{
             throw new RuntimeException("Failed to register volunteer", e);
         }
     }
-}
 
+    public List<Volunteer> getVolunteerByStatus(VolunteerStatus status) {
+        return volunteerRepository.findByStatus(status);
+    }
+}

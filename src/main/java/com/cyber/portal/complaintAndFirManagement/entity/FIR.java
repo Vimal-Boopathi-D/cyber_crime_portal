@@ -30,7 +30,6 @@ public class FIR {
     private PoliceOfficer generatedBy;
 
     private LocalDateTime generatedAt;
-    private String filePath;
 
     @PrePersist
     protected void onCreate() {

@@ -1,11 +1,13 @@
 package com.cyber.portal.volunteerManagement.controller;
 
 import com.cyber.portal.volunteerManagement.dto.VolunteerRegistrationDto;
+import com.cyber.portal.sharedResources.enums.VolunteerStatus;
 import com.cyber.portal.volunteerManagement.entity.Volunteer;
 import com.cyber.portal.volunteerManagement.repository.VolunteerRepository;
 import com.cyber.portal.sharedResources.dto.ApiResponse;
 import com.cyber.portal.volunteerManagement.service.VolunteerService;
 import jakarta.validation.Valid;
+import com.cyber.portal.volunteerManagement.service.VolunteerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -42,4 +44,11 @@ public class VolunteerController {
         List<Volunteer> volunteers = volunteerRepository.findAll();
         return ResponseEntity.ok(ApiResponse.of(HttpStatus.OK, "Volunteers retrieved", volunteers));
     }
+
+    @GetMapping("/{status}")
+    public ResponseEntity<ApiResponse<List<Volunteer>>> getVolunteer(@PathVariable VolunteerStatus status) {
+        List<Volunteer> volunteers = volunteerService.getVolunteerByStatus(status);
+        return ResponseEntity.ok(ApiResponse.of(HttpStatus.OK, "Volunteers retrieved", volunteers));
+    }
+
 }

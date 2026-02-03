@@ -32,9 +32,9 @@ public class PoliceController {
     public ResponseEntity<ApiResponse<FIR>> uploadFIR(
             @PathVariable Long id,
             @RequestParam String firNo,
-            @RequestParam String officerName) {
-        var fir = documentService.uploadFIR(id, firNo, officerName);
-        return ResponseEntity.ok(ApiResponse.of(HttpStatus.OK, "FIR uploaded successfully", fir));
+            @RequestParam Long officerId) {
+       documentService.uploadFIR(id, firNo, officerId);
+        return ResponseEntity.ok(ApiResponse.of(HttpStatus.OK, "FIR uploaded successfully",null));
     }
 
     @Data
