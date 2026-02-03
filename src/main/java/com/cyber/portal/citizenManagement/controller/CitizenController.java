@@ -35,16 +35,15 @@ public class CitizenController {
                         .body(ApiResponse.of(HttpStatus.NOT_FOUND, "Citizen not found", null)));
     }
 
-    @GetMapping("/stations")
-    public ResponseEntity<ApiResponse<List<PoliceStation>>> getAllPoliceStations(){
-        List<PoliceStation> stations = citizenService.getAllPoliceStation();
-        return ResponseEntity.ok(ApiResponse.of(HttpStatus.OK, "Fetched all policeStations", stations));
-    }
+//    @GetMapping()
+//    public ResponseEntity<ApiResponse<List<PoliceStation>>> getAllPoliceStations(){
+//        List<PoliceStation> stations = citizenService.getAllPoliceStation();
+//
+//        return ResponseEntity.ok(
+//                ApiResponse.success("",stations)
+//        );
+//    }
 
-    @GetMapping("/officers")
-    public ResponseEntity<ApiResponse<List<PoliceOfficer>>> getAllPoliceOfficers(){
-        List<PoliceOfficer> officers = citizenService.getAllPoliceOfficers();
-        return ResponseEntity.ok(ApiResponse.of(HttpStatus.OK, "Fetched all policeOfficers", officers));
-    }
+
 }
 
