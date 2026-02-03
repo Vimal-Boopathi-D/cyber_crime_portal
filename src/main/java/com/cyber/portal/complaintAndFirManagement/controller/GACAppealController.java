@@ -1,5 +1,7 @@
 package com.cyber.portal.complaintAndFirManagement.controller;
 
+import com.cyber.portal.complaintAndFirManagement.dto.GACAppealRequestDTO;
+import com.cyber.portal.complaintAndFirManagement.dto.GACAppealResponseDTO;
 import com.cyber.portal.complaintAndFirManagement.entity.GACAppeal;
 import com.cyber.portal.complaintAndFirManagement.service.GACAppealService;
 import com.cyber.portal.sharedResources.dto.ApiResponse;
@@ -15,16 +17,19 @@ public class GACAppealController {
     private final GACAppealService gacAppealService;
 
     @PostMapping("/submit")
-    public ResponseEntity<ApiResponse<GACAppeal>> submitAppeal(@RequestBody GACAppeal appeal) {
-        GACAppeal saved = gacAppealService.submitAppeal(appeal);
-        return ResponseEntity.ok(ApiResponse.of(HttpStatus.OK, "Appeal submitted successfully", saved));
+    public ResponseEntity<ApiResponse<Void>> submitAppeal(
+            @RequestBody GACAppealRequestDTO dto) {
+        gacAppealService.submitAppeal(dto);
+        return ResponseEntity.ok(
+                ApiResponse.of(HttpStatus.OK, "Appeal submitted successfully", null)
+        );
     }
 
+
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<GACAppeal>> getAppeal(@PathVariable Long id) {
-        return gacAppealService.getAppeal(id)
-                .map(appeal -> ResponseEntity.ok(ApiResponse.of(HttpStatus.OK, "Appeal found", appeal)))
-                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body(ApiResponse.of(HttpStatus.NOT_FOUND, "Appeal not found", null)));
+    public ResponseEntity<ApiResponse<GACAppealResponseDTO>> getAppeal(@PathVariable Long id) {
+        GACAppealResponseDTO responseDTO= gacAppealService.getAppeal(id);
+        return ResponseEntity.ok(ApiResponse.of(HttpStatus.OK, "Appeal submitted successfully", responseDTO));
     }
+
 }

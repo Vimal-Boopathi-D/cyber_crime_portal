@@ -1,5 +1,11 @@
 package com.cyber.portal.complaintAndFirManagement.service.impl;
 
+import com.cyber.portal.citizenManagement.dto.ComplaintHistoryDto;
+import com.cyber.portal.citizenManagement.entity.Citizen;
+import com.cyber.portal.citizenManagement.repository.CitizenRepository;
+import com.cyber.portal.complaintAndFirManagement.dto.ComplaintDto;
+import com.cyber.portal.complaintAndFirManagement.dto.ComplaintRequestDTO;
+import com.cyber.portal.complaintAndFirManagement.dto.ComplaintTimelineResponseDTO;
 import com.cyber.portal.complaintAndFirManagement.entity.Complaint;
 import com.cyber.portal.complaintAndFirManagement.entity.ComplaintTimeline;
 import com.cyber.portal.complaintAndFirManagement.repository.ComplaintRepository;
@@ -23,25 +29,76 @@ public class ComplaintServiceImpl implements ComplaintService {
     private final ComplaintRepository complaintRepository;
     private final ComplaintTimelineRepository timelineRepository;
     private final NotificationService notificationService;
+    private final CitizenRepository citizenRepository;
 
     @Override
     @Transactional
-    public Complaint submitComplaint(Complaint complaint) {
-        complaint.setAcknowledgementNo("ACK-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase());
+    public String submitComplaint(ComplaintRequestDTO complaintRequestDTO) {
+        Complaint complaint = new Complaint();
+        String ackNo = "ACK-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
+        complaint.setAcknowledgementNo(ackNo);
+
+        Citizen citizen = citizenRepository.findById(complaintRequestDTO.getCitizenId()).orElseThrow(() -> new RuntimeException("Citizen not found"));
+        complaint.setCitizen(citizen);
+        complaint.setCategory(complaintRequestDTO.getCategory());
+        complaint.setIncidentDate(complaintRequestDTO.getIncidentDate());
+        complaint.setIncidentLocation(complaintRequestDTO.getIncidentLocation());
+        complaint.setReasonForDelay(complaintRequestDTO.getReasonForDelay());
+        complaint.setState(complaintRequestDTO.getState());
+        complaint.setDistrict(complaintRequestDTO.getDistrict());
+        complaint.setPoliceStation(complaintRequestDTO.getPoliceStation());
+        complaint.setStatus(IncidentStatus.SUBMITTED);
+        complaint.setAdditionalInfo(complaintRequestDTO.getAdditionalInfo());
         Complaint saved = complaintRepository.save(complaint);
         saveTimeline(saved, IncidentStatus.SUBMITTED, "Initial Submission", "Citizen");
         notificationService.sendStatusUpdate(saved.getId());
-        return saved;
+        return ackNo;
     }
 
     @Override
-    public Optional<Complaint> getComplaintByAckNo(String ack) {
-        return complaintRepository.findByAcknowledgementNo(ack);
+    public ComplaintDto getComplaintByAckNo(String ack) {
+        Complaint complaint= complaintRepository.findByAcknowledgementNo(ack).orElseThrow(() -> new PortalException("Not Found", HttpStatus.NOT_FOUND));
+        return ComplaintDto.builder()
+                .id(complaint.getId())
+                .acknowledgementNo(complaint.getAcknowledgementNo())
+                .category(complaint.getCategory())
+
+                .incidentDate(complaint.getIncidentDate())
+                .reasonForDelay(complaint.getReasonForDelay())
+                .additionalInfo(complaint.getAdditionalInfo())
+
+                .incidentLocation(complaint.getIncidentLocation())
+                .state(complaint.getState())
+                .district(complaint.getDistrict())
+                .policeStation(complaint.getPoliceStation())
+
+                .status(complaint.getStatus())
+                .citizenId(complaint.getCitizen() != null ? complaint.getCitizen().getId() : null)
+                .citizenName(complaint.getCitizen() != null ? complaint.getCitizen().getName() : null)
+                .citizenMobile(complaint.getCitizen() != null ? complaint.getCitizen().getMobileNo() : null)
+                .firId(complaint.getFir() != null ? complaint.getFir().getId() : null)
+                .firNumber(complaint.getFir() != null ? complaint.getFir().getFirNo() : null)
+                .createdAt(complaint.getCreatedAt())
+                .updatedAt(complaint.getUpdatedAt())
+                .build();
     }
 
     @Override
-    public List<Complaint> getCitizenComplaints(Long id) {
-        return complaintRepository.findByCitizenId(id);
+    public List<ComplaintHistoryDto> getCitizenComplaints(Long citizenId) {
+        return complaintRepository.findByCitizenId(citizenId)
+                .stream()
+                .map(c -> ComplaintHistoryDto.builder()
+                        .id(c.getId())
+                        .acknowledgementNo(c.getAcknowledgementNo())
+                        .category(c.getCategory())
+                        .incidentDate(c.getIncidentDate())
+                        .incidentLocation(c.getIncidentLocation())
+                        .state(c.getState())
+                        .district(c.getDistrict())
+                        .policeStation(c.getPoliceStation())
+                        .status(c.getStatus())
+                        .build())
+                .toList();
     }
 
     @Override
@@ -57,8 +114,17 @@ public class ComplaintServiceImpl implements ComplaintService {
     }
 
     @Override
-    public List<ComplaintTimeline> getTimeline(Long id) {
-        return timelineRepository.findByComplaintIdOrderByUpdatedAtDesc(id);
+    public List<ComplaintTimelineResponseDTO> getTimeline(Long id) {
+        List<ComplaintTimeline> timelines= timelineRepository.findByComplaintIdOrderByUpdatedAtDesc(id);
+        return timelines.stream()
+                .map(t -> ComplaintTimelineResponseDTO.builder()
+                        .id(t.getId())
+                        .status(t.getStatus())
+                        .remarks(t.getRemarks())
+                        .updatedBy(t.getUpdatedBy())
+                        .updatedAt(t.getUpdatedAt())
+                        .build())
+                .toList();
     }
 
     @Override
