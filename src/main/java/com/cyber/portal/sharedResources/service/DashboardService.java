@@ -7,4 +7,5 @@ public interface DashboardService {
     Map<String, Long> getComplaintsByStatus();
     Map<String, Long> getComplaintsByState();
     Map<String, Object> getOverallStats();
+    Map<String, Object> getCitizenComplaints(Long citizenId);
 }

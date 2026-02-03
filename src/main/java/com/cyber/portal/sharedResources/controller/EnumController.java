@@ -14,7 +14,6 @@ public class EnumController {
     public List<Map<String, String>> getComplaintCategories() {
 
         List<Map<String, String>> list = new ArrayList<>();
-
         for (ComplaintCategory category : ComplaintCategory.values()) {
             Map<String, String> map = new HashMap<>();
             map.put("value", category.getValue()); // ONLINE_FRAUD
@@ -28,7 +27,6 @@ public class EnumController {
     public List<Map<String, String>> getComplaintstates() {
 
         List<Map<String, String>> list = new ArrayList<>();
-
         for (State states : State.values()) {
             Map<String, String> map = new HashMap<>();
             map.put("value", states.getValue()); // ONLINE_FRAUD
@@ -43,7 +41,6 @@ public class EnumController {
     public List<Map<String, String>> getSuspectType() {
 
         List<Map<String, String>> list = new ArrayList<>();
-
         for (SuspectIdentifierType suspectIdentifierType : SuspectIdentifierType.values()) {
             Map<String, String> map = new HashMap<>();
             map.put("value", suspectIdentifierType.getValue()); // ONLINE_FRAUD

@@ -60,8 +60,8 @@ public class NotificationServiceImpl implements NotificationService {
 
             MimeMessage mimeMessage = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
-            
-            helper.setFrom("sibiyamichael5801@gmail.com");
+
+            helper.setTo(complaint.getCitizen().getEmail());
             helper.setTo(complaint.getCitizen().getEmail());
             helper.setSubject("IMPORTANT: Complaint Status Update - " + complaint.getAcknowledgementNo());
             helper.setText(htmlContent, true);

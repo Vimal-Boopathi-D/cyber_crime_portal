@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,5 +36,14 @@ public class DashboardController {
     @GetMapping("/by-state")
     public ResponseEntity<ApiResponse<Map<String, Long>>> getByState() {
         return ResponseEntity.ok(ApiResponse.of(HttpStatus.OK, "Stats by state retrieved", dashboardService.getComplaintsByState()));
+    }
+
+    @GetMapping("/{citizenId}/complaints")
+    public ResponseEntity<Map<String, Object>> getCitizenComplaints(
+            @PathVariable Long citizenId) {
+
+        return ResponseEntity.ok(
+                dashboardService.getCitizenComplaints(citizenId)
+        );
     }
 }
