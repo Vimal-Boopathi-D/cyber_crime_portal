@@ -1,6 +1,7 @@
 package com.cyber.portal.complaintAndFirManagement.service;
 
 import com.cyber.portal.citizenManagement.dto.ComplaintHistoryDto;
+import com.cyber.portal.complaintAndFirManagement.dto.AssignedOfficerDTO;
 import com.cyber.portal.complaintAndFirManagement.dto.ComplaintDto;
 import com.cyber.portal.complaintAndFirManagement.dto.ComplaintRequestDTO;
 import com.cyber.portal.complaintAndFirManagement.dto.ComplaintTimelineResponseDTO;
@@ -18,4 +19,5 @@ public interface ComplaintService {
     List<ComplaintTimelineResponseDTO> getTimeline(Long complaintId);
     Optional<Complaint> trackById(Long id);
     List<Complaint> getComplaints(Long citizenId);
+    AssignedOfficerDTO getAssignedOfficer(Long complaintId);
 }
