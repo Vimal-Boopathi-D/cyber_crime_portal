@@ -1,6 +1,8 @@
 package com.cyber.portal.sharedResources.controller;
 
+import com.cyber.portal.complaintAndFirManagement.entity.ComplaintTimeline;
 import com.cyber.portal.sharedResources.dto.ApiResponse;
+import com.cyber.portal.sharedResources.dto.citizenSummaryDTO;
 import com.cyber.portal.sharedResources.service.DashboardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -45,5 +48,10 @@ public class DashboardController {
         return ResponseEntity.ok(
                 dashboardService.getCitizenComplaints(citizenId)
         );
+    }
+
+    @GetMapping("/summary/{citizenId}")
+    public citizenSummaryDTO getSummary(@PathVariable Long citizenId) {
+        return dashboardService.getDashboardSummary(citizenId);
     }
 }
