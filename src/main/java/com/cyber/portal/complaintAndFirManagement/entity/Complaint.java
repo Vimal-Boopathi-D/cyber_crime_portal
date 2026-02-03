@@ -46,12 +46,12 @@ public class Complaint {
     @Enumerated(EnumType.STRING)
     private IncidentStatus status;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "citizen_id")
     private Citizen citizen;
 
-    @OneToOne(mappedBy = "complaint", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private FIR fir;
+//    @OneToOne(mappedBy = "complaint", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    private FIR fir;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

@@ -373,7 +373,7 @@ public class DocumentServiceImpl implements DocumentService {
                 row.createCell(3).setCellValue(c.getAdditionalInfo());
                 row.createCell(4).setCellValue(c.getStatus().name());
                 row.createCell(5).setCellValue(c.getPoliceStation());
-                row.createCell(6).setCellValue(firGenerated);
+//                row.createCell(6).setCellValue(firGenerated);
             }
 
             for (int i = 0; i < columns.length; i++) {
