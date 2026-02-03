@@ -4,7 +4,11 @@ import com.cyber.portal.sharedResources.enums.State;
 import com.cyber.portal.sharedResources.enums.SuspectIdentifierType;
 import com.cyber.portal.suspectManagement.entity.SuspectRegistry;
 
+import java.util.List;
+
 public interface SuspectService {
+
+    List<SuspectRegistry> getAllSuspect();
 
     SuspectRegistry searchSuspect(
             SuspectIdentifierType identifierType,

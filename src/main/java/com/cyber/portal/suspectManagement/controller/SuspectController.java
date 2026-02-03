@@ -11,14 +11,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 import java.util.Map;
 
 @RestController
 @RequestMapping("/api/suspects")
 @RequiredArgsConstructor
 public class SuspectController {
+    private final SuspectRepository suspectRepository;
     private final SuspectService suspectService;
-
 //    @GetMapping("/search")
 //    public ResponseEntity<ApiResponse<SuspectRegistry>> search(
 //            @RequestParam SuspectIdentifierType type,
@@ -55,10 +57,10 @@ public class SuspectController {
         return ResponseEntity.ok(Map.of("message", "Suspect reported successfully", "suspect", suspect));
     }
 
-
-
-
-
-
+    @GetMapping
+    public ResponseEntity<ApiResponse<List<SuspectRegistry>>> getAllSuspect(){
+        List<SuspectRegistry> suspect = suspectService.getAllSuspect();
+        return ResponseEntity.ok(ApiResponse.of(HttpStatus.OK, "Fetched all suspects", suspect));
+    }
 
 }

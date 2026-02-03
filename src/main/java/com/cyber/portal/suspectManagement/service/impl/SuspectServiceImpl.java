@@ -1,24 +1,31 @@
-package com.cyber.portal.suspectManagement.service;
+package com.cyber.portal.suspectManagement.service.impl;
 
 import com.cyber.portal.sharedResources.enums.State;
 import com.cyber.portal.sharedResources.enums.SuspectIdentifierType;
 import com.cyber.portal.suspectManagement.entity.SuspectRegistry;
 import com.cyber.portal.suspectManagement.repository.SuspectRepository;
+import com.cyber.portal.suspectManagement.service.SuspectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
-public class suspectServiceImpl implements SuspectService{
+public class SuspectServiceImpl implements SuspectService {
+    private final SuspectRepository suspectRepository;
 
-    private final SuspectRepository repository;
+    @Override
+    public List<SuspectRegistry> getAllSuspect() {
+        return suspectRepository.findAll();
+    }
 
     @Override
     public SuspectRegistry searchSuspect(
             SuspectIdentifierType identifierType,
             String identifierValue) {
 
-        return repository
+        return suspectRepository
                 .findByIdentifierTypeAndIdentifierValue(identifierType, identifierValue)
                 .orElse(null);
     }
@@ -31,7 +38,7 @@ public class suspectServiceImpl implements SuspectService{
             String description,
             String evidencePath) {
 
-        SuspectRegistry suspect = repository
+        SuspectRegistry suspect = suspectRepository
                 .findByIdentifierTypeAndIdentifierValue(identifierType, identifierValue)
                 .orElse(null);
         if (suspect != null) {
@@ -40,7 +47,7 @@ public class suspectServiceImpl implements SuspectService{
             suspect.setDescription(description);
             suspect.setEvidencePath(evidencePath);
             // lastReportedAt auto-updated by @PreUpdate
-            return repository.save(suspect);
+            return suspectRepository.save(suspect);
         }
 
         SuspectRegistry newSuspect = SuspectRegistry.builder()
@@ -50,6 +57,6 @@ public class suspectServiceImpl implements SuspectService{
                 .description(description)
                 .evidencePath(evidencePath)
                 .build();
-        return repository.save(newSuspect);
+        return suspectRepository.save(newSuspect);
     }
 }
