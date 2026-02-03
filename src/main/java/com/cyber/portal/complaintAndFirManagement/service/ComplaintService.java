@@ -17,4 +17,5 @@ public interface ComplaintService {
     Complaint updateStatus(Long complaintId, IncidentStatus status, String remarks, String officer);
     List<ComplaintTimelineResponseDTO> getTimeline(Long complaintId);
     Optional<Complaint> trackById(Long id);
+    List<Complaint> getComplaints(Long citizenId);
 }

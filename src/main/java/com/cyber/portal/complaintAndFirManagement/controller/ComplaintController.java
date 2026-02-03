@@ -3,6 +3,7 @@ package com.cyber.portal.complaintAndFirManagement.controller;
 import com.cyber.portal.complaintAndFirManagement.dto.ComplaintDto;
 import com.cyber.portal.complaintAndFirManagement.dto.ComplaintRequestDTO;
 import com.cyber.portal.complaintAndFirManagement.dto.ComplaintTimelineResponseDTO;
+import com.cyber.portal.citizenManagement.entity.PoliceOfficer;
 import com.cyber.portal.complaintAndFirManagement.entity.Complaint;
 import com.cyber.portal.complaintAndFirManagement.service.ComplaintService;
 import com.cyber.portal.sharedResources.dto.ApiResponse;
@@ -55,5 +56,12 @@ public class ComplaintController {
                             .body(report);
                 })
                 .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    }
+
+    @GetMapping
+    public ResponseEntity<ApiResponse<List<Complaint>>> getComplaints(
+            @RequestParam(required = false) Long citizenId) {
+        List<Complaint> complaints = complaintService.getComplaints(citizenId);
+        return ResponseEntity.ok(ApiResponse.of(HttpStatus.OK, "Fetched all complaints", complaints));
     }
 }
