@@ -1,6 +1,7 @@
 package com.cyber.portal.complaintAndFirManagement.repository;
 
 import com.cyber.portal.complaintAndFirManagement.entity.Complaint;
+import com.cyber.portal.sharedResources.enums.IncidentStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -23,4 +24,9 @@ public interface ComplaintRepository extends JpaRepository<Complaint, Long> {
 
     @org.springframework.data.jpa.repository.Query("SELECT c.state, COUNT(c) FROM Complaint c GROUP BY c.state")
     List<Object[]> countComplaintsByState();
+
+    long countByCitizen_IdAndStatus(Long citizenId, IncidentStatus status);
+
+    List<Complaint> findByCitizen_IdOrderByCreatedAtDesc(Long citizenId);
+
 }
