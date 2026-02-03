@@ -2,14 +2,19 @@ package com.cyber.portal.complaintAndFirManagement.service.impl;
 
 import com.cyber.portal.citizenManagement.dto.ComplaintHistoryDto;
 import com.cyber.portal.citizenManagement.entity.Citizen;
+import com.cyber.portal.citizenManagement.entity.PoliceOfficer;
+import com.cyber.portal.citizenManagement.entity.PoliceStation;
 import com.cyber.portal.citizenManagement.repository.CitizenRepository;
+import com.cyber.portal.complaintAndFirManagement.dto.AssignedOfficerDTO;
 import com.cyber.portal.complaintAndFirManagement.dto.ComplaintDto;
 import com.cyber.portal.complaintAndFirManagement.dto.ComplaintRequestDTO;
 import com.cyber.portal.complaintAndFirManagement.dto.ComplaintTimelineResponseDTO;
 import com.cyber.portal.complaintAndFirManagement.entity.Complaint;
 import com.cyber.portal.complaintAndFirManagement.entity.ComplaintTimeline;
+import com.cyber.portal.complaintAndFirManagement.entity.FIR;
 import com.cyber.portal.complaintAndFirManagement.repository.ComplaintRepository;
 import com.cyber.portal.complaintAndFirManagement.repository.ComplaintTimelineRepository;
+import com.cyber.portal.complaintAndFirManagement.repository.FIRRepository;
 import com.cyber.portal.complaintAndFirManagement.service.ComplaintService;
 import com.cyber.portal.sharedResources.enums.IncidentStatus;
 import com.cyber.portal.sharedResources.exception.PortalException;
@@ -30,6 +35,7 @@ public class ComplaintServiceImpl implements ComplaintService {
     private final ComplaintTimelineRepository timelineRepository;
     private final NotificationService notificationService;
     private final CitizenRepository citizenRepository;
+    private final FIRRepository firRepository;
 
     @Override
     @Transactional
@@ -145,4 +151,27 @@ public class ComplaintServiceImpl implements ComplaintService {
         timelineRepository.save(ComplaintTimeline.builder()
                 .complaint(c).status(s).remarks(r).updatedBy(u).build());
     }
+
+    public AssignedOfficerDTO getAssignedOfficer(Long complaintId) {
+        FIR fir = firRepository.findByComplaintId(complaintId)
+                .orElseThrow(() ->
+                        new RuntimeException("Officers not found")
+                );
+        PoliceOfficer officer = fir.getGeneratedBy();
+        if (officer == null) {
+            throw new RuntimeException("Officers not found");
+        }
+        Citizen citizen = officer.getCitizen();
+        PoliceStation station = officer.getPoliceStation();
+        AssignedOfficerDTO dto = new AssignedOfficerDTO();
+        dto.setOfficerId(officer.getOfficerId());
+        dto.setOfficerName(citizen.getName());
+        dto.setRank(officer.getRank());
+        dto.setBadgeNumber(officer.getBadgeNumber());
+        dto.setMobileNo(citizen.getMobileNo());
+        dto.setEmail(citizen.getEmail());
+
+        return dto;
+    }
+
 }

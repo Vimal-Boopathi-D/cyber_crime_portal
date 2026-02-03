@@ -1,5 +1,6 @@
 package com.cyber.portal.complaintAndFirManagement.controller;
 
+import com.cyber.portal.complaintAndFirManagement.dto.AssignedOfficerDTO;
 import com.cyber.portal.complaintAndFirManagement.dto.ComplaintDto;
 import com.cyber.portal.complaintAndFirManagement.dto.ComplaintRequestDTO;
 import com.cyber.portal.complaintAndFirManagement.dto.ComplaintTimelineResponseDTO;
@@ -24,6 +25,7 @@ import java.util.Map;
 public class ComplaintController {
     private final ComplaintService complaintService;
     private final ReportService reportService;
+
 
     @PostMapping("/submit")
     public ResponseEntity<ApiResponse<String>> submit(@RequestBody ComplaintRequestDTO complaint) {
@@ -63,5 +65,11 @@ public class ComplaintController {
             @RequestParam(required = false) Long citizenId) {
         List<Complaint> complaints = complaintService.getComplaints(citizenId);
         return ResponseEntity.ok(ApiResponse.of(HttpStatus.OK, "Fetched all complaints", complaints));
+    }
+
+    @GetMapping("/{complaintId}/assigned-officer")
+    public AssignedOfficerDTO getAssignedOfficer(
+            @PathVariable Long complaintId) {
+        return complaintService.getAssignedOfficer(complaintId);
     }
 }

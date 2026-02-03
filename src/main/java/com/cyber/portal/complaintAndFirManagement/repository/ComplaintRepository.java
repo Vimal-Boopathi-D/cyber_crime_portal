@@ -29,4 +29,8 @@ public interface ComplaintRepository extends JpaRepository<Complaint, Long> {
 
     List<Complaint> findByCitizen_IdOrderByCreatedAtDesc(Long citizenId);
 
+    long countByCitizenId(Long citizenId);
+
+    long countByCitizenIdAndStatus(Long citizenId, IncidentStatus status);
+
 }

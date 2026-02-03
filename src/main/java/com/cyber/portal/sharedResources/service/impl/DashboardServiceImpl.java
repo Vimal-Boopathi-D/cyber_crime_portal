@@ -5,6 +5,7 @@ import com.cyber.portal.complaintAndFirManagement.repository.ComplaintRepository
 import com.cyber.portal.complaintAndFirManagement.repository.ComplaintTimelineRepository;
 import com.cyber.portal.complaintAndFirManagement.repository.FIRRepository;
 import com.cyber.portal.complaintAndFirManagement.repository.GACAppealRepository;
+import com.cyber.portal.sharedResources.dto.citizenSummaryDTO;
 import com.cyber.portal.sharedResources.enums.IncidentStatus;
 import com.cyber.portal.sharedResources.service.DashboardService;
 import lombok.RequiredArgsConstructor;
@@ -109,6 +110,22 @@ public class DashboardServiceImpl implements DashboardService {
         response.put("complaints", complaintList);
 
         return response;
+    }
+
+    public citizenSummaryDTO getDashboardSummary(Long citizenId) {
+
+        long total = complaintRepository.countByCitizenId(citizenId);
+
+        long closed = complaintRepository.countByCitizenIdAndStatus(
+                citizenId, IncidentStatus.CLOSED
+        );
+        long pending = total - closed;
+        citizenSummaryDTO dto = new citizenSummaryDTO();
+        dto.setTotalComplaints(total);
+        dto.setClosedCases(closed);
+        dto.setPendingCases(pending);
+
+        return dto;
     }
 
 }
