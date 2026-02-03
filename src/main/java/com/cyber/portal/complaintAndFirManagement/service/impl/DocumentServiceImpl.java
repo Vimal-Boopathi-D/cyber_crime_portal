@@ -319,27 +319,29 @@ public class DocumentServiceImpl implements DocumentService {
 
     @Override
     public byte[] generateCitizenComplaintExcel(Long citizenId) {
+        List<Complaint> complaints;
 
-        Citizen citizen = citizenRepository.findById(citizenId)
-                .orElseThrow(() -> new RuntimeException("Citizen not found"));
+        if (citizenId == null) {
+            complaints = complaintRepository.findAll();
+        }else {
+            complaints =
+                    complaintRepository.findByCitizenId(citizenId);
+        }
 
-        List<Complaint> complaints =
-                complaintRepository.findByCitizenId(citizenId);
+        if (complaints.isEmpty()) {
+            throw new RuntimeException("No complaints found for this citizen");
+        }
 
         try (Workbook workbook = new XSSFWorkbook()) {
 
             Sheet sheet = workbook.createSheet("My Complaints");
-
-            // ===== Header Style =====
             CellStyle headerStyle = workbook.createCellStyle();
             org.apache.poi.ss.usermodel.Font headerFont = workbook.createFont();
             headerFont.setBold(true);          // Works now
             headerStyle.setFont(headerFont);
-
             headerStyle.setAlignment(HorizontalAlignment.CENTER);
             headerStyle.setBorderBottom(BorderStyle.THIN);
 
-            // ===== Header Row =====
             Row header = sheet.createRow(0);
             String[] columns = {
                     "Complaint No",
@@ -348,7 +350,7 @@ public class DocumentServiceImpl implements DocumentService {
                     "Description",
                     "Status",
                     "Police Station",
-                    "FIR Generated"
+                    "Fir Generated"
             };
 
             for (int i = 0; i < columns.length; i++) {
@@ -357,42 +359,34 @@ public class DocumentServiceImpl implements DocumentService {
                 cell.setCellStyle(headerStyle);
             }
 
-            // ===== Data Rows =====
             DateTimeFormatter formatter =
                     DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
             int rowNum = 1;
-
             for (Complaint c : complaints) {
-
                 Row row = sheet.createRow(rowNum++);
-
                 String firGenerated =
                         c.getFir() != null ? "YES" : "NO";
-
                 row.createCell(0).setCellValue(c.getId());
-                row.createCell(1).setCellValue(
-                        c.getCreatedAt().format(formatter)
-                );
-                row.createCell(2).setCellValue(c.getCategory().toString());
+                row.createCell(1).setCellValue(c.getCreatedAt().format(formatter));
+                row.createCell(2).setCellValue(c.getCategory().name());
                 row.createCell(3).setCellValue(c.getAdditionalInfo());
                 row.createCell(4).setCellValue(c.getStatus().name());
                 row.createCell(5).setCellValue(c.getPoliceStation());
-                row.createCell(6).setCellValue(firGenerated);
+//                row.createCell(6).setCellValue(firGenerated);
             }
 
-            // ===== Auto-size Columns =====
             for (int i = 0; i < columns.length; i++) {
                 sheet.autoSizeColumn(i);
             }
 
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             workbook.write(out);
-
             return out.toByteArray();
 
         } catch (Exception e) {
             throw new RuntimeException("Error generating complaint Excel file", e);
         }
     }
+
 }

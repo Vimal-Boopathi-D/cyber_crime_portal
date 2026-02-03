@@ -1,6 +1,7 @@
 package com.cyber.portal.citizenManagement.controller;
 
 import com.cyber.portal.citizenManagement.entity.Citizen;
+import com.cyber.portal.citizenManagement.entity.PoliceOfficer;
 import com.cyber.portal.citizenManagement.entity.PoliceStation;
 import com.cyber.portal.citizenManagement.service.CitizenService;
 import com.cyber.portal.sharedResources.dto.ApiResponse;
@@ -26,7 +27,7 @@ public class CitizenController {
         return ResponseEntity.ok(ApiResponse.of(HttpStatus.OK, "Citizen registered successfully", saved));
     }
 
-    @GetMapping("/login")
+    @PostMapping("/login")
     public ResponseEntity<ApiResponse<Citizen>> getCitizen(@RequestParam String email, @RequestParam String password) {
         return citizenService.getCitizenByLoginId(email, password)
                 .map(citizen -> ResponseEntity.ok(ApiResponse.of(HttpStatus.OK, "Citizen found", citizen)))
