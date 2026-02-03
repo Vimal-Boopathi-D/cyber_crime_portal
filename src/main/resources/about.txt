@@ -1,5 +1,174 @@
 NATIONAL CYBERCRIME REPORTING PORTAL – DETAILED INFORMATION
+Overview
 
+The National Cybercrime Reporting Portal (https://cybercrime.gov.in
+) is the Government of India’s official online platform for reporting cybercrime complaints. It was launched by the Ministry of Home Affairs (MHA) under the Indian Cybercrime Coordination Centre (I4C) to allow citizens to report cybercrimes from anywhere in the country.
+
+The portal centralizes complaints across categories such as financial fraud, social media abuse, technical attacks, and crimes against women and children. Complaints filed through the portal are routed to relevant law enforcement agencies in respective States or Union Territories for investigation and action.
+
+PORTAL FEATURES AND USE
+Official Reporting Interface
+
+The portal offers users the ability to:
+
+Register or log in using a valid Indian mobile number with OTP verification.
+
+Select complaint type and sub-category for precise reporting.
+
+Upload supporting documents and evidence, such as screenshots and transaction details.
+
+Track the complaint status online using a reference ID.
+
+Submit complaints anonymously or with full details based on the type of crime.
+
+LOGIN & REGISTRATION PROCESS
+
+To begin reporting:
+
+Go to https://cybercrime.gov.in
+.
+
+Click “File a Complaint” or “Report Cyber Crime.”
+
+On the login page, choose “New User” to register with your name, state, email, and mobile number.
+
+You will receive a One-Time Password (OTP) on your mobile number — enter it to verify.
+
+Complete the security verification fields and log in to access the complaint form.
+
+If you already have an account, click “Citizen Login” and enter your registered mobile with OTP.
+
+The OTP is typically valid for a short period (e.g., 30 minutes), after which a new OTP must be generated.
+
+CATEGORY & SUB-CATEGORY DETAILS
+
+When filing a complaint, you must select:
+
+A main category (e.g., Financial Fraud, Social Media Crime).
+
+A sub-category if applicable (e.g., UPI fraud, identity theft).
+
+Detailed incident information such as date, time, platform, and description of the incident.
+
+Common categories include:
+
+Online & social media crimes
+
+Online financial frauds
+
+Ransomware and hacking attempts
+
+Cryptocurrency-related crimes
+
+Trafficking or illegal content distribution
+
+Other cyber offences
+
+EVIDENCE & DOCUMENTS REQUIRED
+
+To support your complaint, it is recommended (and sometimes mandatory) to upload:
+
+Screen screenshots of messages, email, or social media activity.
+
+Transaction documents: bank statements, UPI/wallet transaction IDs, dates/times.
+
+Chat logs, URLs, or video evidence if applicable.
+
+Identification proof (like Aadhaar or PAN) when requested by the portal.
+
+Upload size limits and file formats may vary, with many formats accepted (e.g., PDF, images, video), and multiple files can be uploaded.
+
+TRACKING YOUR COMPLAINT
+
+After you submit:
+
+You will receive an Acknowledgment/Reference Number.
+
+To track the status, go to “Track Complaint” on the portal.
+
+Enter your acknowledgment number and registered mobile number to view the latest status.
+
+The portal status reflects stages such as:
+
+Submitted
+
+Received
+
+Under verification
+
+Assigned to police
+
+Investigation in progress
+
+Evidence verified
+
+Resolved
+
+Closed
+
+REPORTING MODES
+Report & Track
+
+Requires personal details (name, mobile, email).
+
+Suitable for most cybercrime complaints.
+
+Enables online status tracking.
+
+Anonymous Reporting
+
+Available especially for sensitive crimes (e.g., content related to children).
+
+Does not require personal identity.
+
+Must still include accurate incident information.
+
+LOGIN ISSUES & SUPPORT
+
+If you encounter issues such as:
+
+Failure to upload documents
+
+OTP errors
+
+Problems submitting the form
+
+Try:
+
+Using a different browser (Chrome, Firefox).
+
+Clearing cache or reloading the page.
+
+Clicking buttons like “Add,” “Upload,” then “Save and Next” to ensure files are processed.
+
+Accepting and saving fields before proceeding.
+
+If persistent errors occur, consider calling support or visiting a local cybercrime police station for assistance. Reporting through alternative channels ensures your complaint is noted even if the portal is temporarily unresponsive.
+
+SUPPORT & HELPLINES
+National Cybercrime Helpline
+
+1930 – Toll-free number available across India for assistance with cybercrime complaints. It is supported by I4C and helps with:
+
+Understanding filing procedures
+
+Immediate reporting of financial frauds
+
+Guidance on necessary evidence and documentation.
+
+Additional support may be available via email contact addresses listed on the portal or through state-wise nodal cyber officers if provided.
+
+IMPORTANT NOTES
+
+Ensure your contact details and incident information are accurate and complete for proper investigation and response.
+
+Uploading evidence increases the chance of effective action and quicker investigation results.
+
+In some cases, even after online reporting, local police intervention or physical follow-up may be necessary for FIR registration and legal procedures.
+
+SUMMARY
+
+The National Cybercrime Reporting Portal is India’s central online platform for reporting cybercrime. With OTP-based login, category and sub-category selection, structured incident reporting, evidence upload, and tracking, it simplifies complaint filing and connects citizens with law enforcement agencies. The toll-free helpline 1930 supports urgent reporting and guidance, making it a key tool in combating cybercrime in India.
 The National Cybercrime Reporting Portal (https://cybercrime.gov.in) is an official Government of India platform developed under the Ministry of Home Affairs (MHA). It operates through the Indian Cybercrime Coordination Centre (I4C) and serves as a centralized online system for reporting cybercrime incidents across India.
 
 The portal was launched to provide citizens with a simple, secure, and accessible way to report cybercrime complaints online without the need to physically visit a police station. It enables quick reporting, tracking, and routing of cybercrime complaints to appropriate law enforcement agencies.

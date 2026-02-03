@@ -139,11 +139,61 @@ public class ComplaintServiceImpl implements ComplaintService {
     }
 
     @Override
-    public List<Complaint> getComplaints(Long citizenId) {
+    public List<ComplaintDto> getComplaints(Long citizenId) {
         if (citizenId == null) {
-            return complaintRepository.findAll();
+            List<Complaint>complaints= complaintRepository.findAll();
+            return complaints.stream()
+                    .map(c->ComplaintDto.builder()
+                    .id(c.getId())
+                            .acknowledgementNo(c.getAcknowledgementNo())
+                            .category(c.getCategory())
+
+                            .incidentDate(c.getIncidentDate())
+                            .reasonForDelay(c.getReasonForDelay())
+                            .additionalInfo(c.getAdditionalInfo())
+
+                            .incidentLocation(c.getIncidentLocation())
+                            .state(c.getState())
+                            .district(c.getDistrict())
+                            .policeStation(c.getPoliceStation())
+
+                            .status(c.getStatus())
+                            .citizenId(c.getCitizen() != null ? c.getCitizen().getId() : null)
+                            .citizenName(c.getCitizen() != null ? c.getCitizen().getName() : null)
+                            .citizenMobile(c.getCitizen() != null ? c.getCitizen().getMobileNo() : null)
+                            .firId(c.getFir() != null ? c.getFir().getId() : null)
+                            .firNumber(c.getFir() != null ? c.getFir().getFirNo() : null)
+                            .createdAt(c.getCreatedAt())
+                            .updatedAt(c.getUpdatedAt())
+                            .build())
+                    .toList();
         }else {
-            return complaintRepository.findByCitizenId(citizenId);
+            List<Complaint>complaints= complaintRepository.findByCitizenId(citizenId);
+            return complaints.stream()
+                    .map(c->ComplaintDto.builder()
+                            .id(c.getId())
+                            .acknowledgementNo(c.getAcknowledgementNo())
+                            .category(c.getCategory())
+
+                            .incidentDate(c.getIncidentDate())
+                            .reasonForDelay(c.getReasonForDelay())
+                            .additionalInfo(c.getAdditionalInfo())
+
+                            .incidentLocation(c.getIncidentLocation())
+                            .state(c.getState())
+                            .district(c.getDistrict())
+                            .policeStation(c.getPoliceStation())
+
+                            .status(c.getStatus())
+                            .citizenId(c.getCitizen() != null ? c.getCitizen().getId() : null)
+                            .citizenName(c.getCitizen() != null ? c.getCitizen().getName() : null)
+                            .citizenMobile(c.getCitizen() != null ? c.getCitizen().getMobileNo() : null)
+                            .firId(c.getFir() != null ? c.getFir().getId() : null)
+                            .firNumber(c.getFir() != null ? c.getFir().getFirNo() : null)
+                            .createdAt(c.getCreatedAt())
+                            .updatedAt(c.getUpdatedAt())
+                            .build())
+                    .toList();
         }
     }
 

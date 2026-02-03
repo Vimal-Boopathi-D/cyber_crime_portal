@@ -22,6 +22,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/complaints")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class ComplaintController {
     private final ComplaintService complaintService;
     private final ReportService reportService;
@@ -61,9 +62,9 @@ public class ComplaintController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<Complaint>>> getComplaints(
+    public ResponseEntity<ApiResponse<List<ComplaintDto>>> getComplaints(
             @RequestParam(required = false) Long citizenId) {
-        List<Complaint> complaints = complaintService.getComplaints(citizenId);
+        List<ComplaintDto> complaints = complaintService.getComplaints(citizenId);
         return ResponseEntity.ok(ApiResponse.of(HttpStatus.OK, "Fetched all complaints", complaints));
     }
 

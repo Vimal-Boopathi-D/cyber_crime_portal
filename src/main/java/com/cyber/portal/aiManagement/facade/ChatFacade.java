@@ -36,9 +36,11 @@ public class ChatFacade {
         String message = dto.getMessage().toLowerCase();
         boolean isProductQuery = isCyberCrimeRelated(message);
         if (isProductQuery) {
+            System.out.println("Routing to RAG service");
             String result = ragService.chatUsingRag(dto.getMessage());
             return new ApiResponse<>(200, "responded successfully", result);
         } else {
+            System.out.println("Routing to general chat service");
             String result = chatService.chat(dto).getResponse();
             return new ApiResponse<>(200, "responded successfully", result);
         }
@@ -55,8 +57,17 @@ public class ChatFacade {
     }
 
 
-    private static final Set<String> CYBERCRIME_KEYWORDS = Set.of(
+    private static final Set<String>  CYBERCRIME_KEYWORDS = Set.of(
 
+            "how to file a complaint",
+            "what documents",
+            "evidence needed",
+            "how to track",
+            "track my complaint",
+            "forgot password",
+            "login issue",
+            "helpline",
+            "support contact",
             "cybercrime",
             "cyber crime",
             "national cybercrime",

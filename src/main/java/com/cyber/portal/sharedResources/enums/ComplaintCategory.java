@@ -1,12 +1,14 @@
 package com.cyber.portal.sharedResources.enums;
 
 public enum ComplaintCategory {
-    ONLINE_FRAUD("Online fraud"),
-    SOCIAL_MEDIA_ABUSE("Social Media Issue"),
-    BANKING_FRAUD("Banking fraud"),
+    ONLINE_FRAUD("Online Fraud"),
+    BANKING_FRAUD("Banking Fraud"),
+    FINANCIAL_FRAUD("Financial Fraud"),
+    SOCIAL_MEDIA_FRAUD("Social Media Fraud"),
     CYBER_BULLYING("Cyber Bullying"),
+    WOMEN_CHILDREN_CRIME("Women / Children Related Crime"),
     HACKING("Hacking"),
-    OTHER_CYBERCRIME("other cybercrime");
+    OTHER_CYBERCRIME("Other Cyber Crime");
 
 private final String category;
 

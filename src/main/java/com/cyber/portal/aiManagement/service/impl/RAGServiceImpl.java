@@ -21,22 +21,35 @@ public class RAGServiceImpl implements RAGService {
 
     @Override
     public String chatUsingRag(String message) {
+
         QuestionAnswerAdvisor advisor = QuestionAnswerAdvisor
                 .builder(vectorStore)
                 .build();
 
         String template = """
-                make it simple and easy to understand and keep the response in
-                just one line for chatbot message with simple steps
-                """;
+You are a Cybercrime Reporting Portal assistant.
+
+Answer the user's question using ONLY the information provided in the context.
+Explain in simple words.
+Keep the answer in ONE short line with clear steps.
+Do NOT say "I don’t have that information" if context is present.
+
+Question:
+{question}
+""";
+
         PromptTemplate promptTemplate = new PromptTemplate(template);
-        Prompt prompt = promptTemplate.create();
+
+        Prompt prompt = promptTemplate.create(
+                Map.of("question", message)
+        );
+
         return chatClient.prompt(prompt)
-                .user(message)
                 .advisors(advisor)
                 .call()
                 .content();
     }
+
 
 
     @Override
