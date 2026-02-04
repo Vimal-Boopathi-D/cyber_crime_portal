@@ -46,7 +46,7 @@ public class Complaint {
     @Enumerated(EnumType.STRING)
     private IncidentStatus status;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "citizen_id")
     private Citizen citizen;
 

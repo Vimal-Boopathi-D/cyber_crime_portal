@@ -2,6 +2,8 @@ package com.cyber.portal.citizenManagement.entity;
 
 import com.cyber.portal.citizenManagement.enums.UserRole;
 import com.cyber.portal.sharedResources.enums.Gender;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -28,6 +30,8 @@ public class Citizen {
     @Column(unique = true)
     private String email;
 
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column
     private String password;
 

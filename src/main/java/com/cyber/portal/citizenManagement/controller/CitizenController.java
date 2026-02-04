@@ -1,8 +1,13 @@
 package com.cyber.portal.citizenManagement.controller;
 
+import com.cyber.portal.citizenManagement.dto.ComplaintHistoryDto;
+import com.cyber.portal.citizenManagement.dto.LoginDto;
 import com.cyber.portal.citizenManagement.entity.Citizen;
+import com.cyber.portal.citizenManagement.entity.PoliceOfficer;
 import com.cyber.portal.citizenManagement.entity.PoliceStation;
 import com.cyber.portal.citizenManagement.service.CitizenService;
+import com.cyber.portal.complaintAndFirManagement.entity.Complaint;
+import com.cyber.portal.complaintAndFirManagement.service.ComplaintService;
 import com.cyber.portal.sharedResources.dto.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,6 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CitizenController {
     private final CitizenService citizenService;
+    private final ComplaintService complaintService;
 
     @PostMapping("/register")
     public ResponseEntity<ApiResponse<Citizen>> register(@RequestBody Citizen citizen,
@@ -26,9 +32,9 @@ public class CitizenController {
         return ResponseEntity.ok(ApiResponse.of(HttpStatus.OK, "Citizen registered successfully", saved));
     }
 
-    @GetMapping("/login")
-    public ResponseEntity<ApiResponse<Citizen>> getCitizen(@RequestParam String email, @RequestParam String password) {
-        return citizenService.getCitizenByLoginId(email, password)
+    @PostMapping("/login")
+    public ResponseEntity<ApiResponse<Citizen>> getCitizen(@RequestBody LoginDto loginDto) {
+        return citizenService.getCitizenByLoginId(loginDto.getEmail(), loginDto.getPassword())
                 .map(citizen -> ResponseEntity.ok(ApiResponse.of(HttpStatus.OK, "Citizen found", citizen)))
                 .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND)
                         .body(ApiResponse.of(HttpStatus.NOT_FOUND, "Citizen not found", null)));
@@ -44,5 +50,24 @@ public class CitizenController {
 //    }
 
 
+    @GetMapping("/officers")
+    public ResponseEntity<ApiResponse<List<PoliceOfficer>>> getAllPoliceOfficers(){
+        List<PoliceOfficer> officers = citizenService.getAllPoliceOfficers();
+        return ResponseEntity.ok(ApiResponse.of(HttpStatus.OK, "Fetched all policeOfficers", officers));
+    }
+//    @GetMapping()
+//    public ResponseEntity<ApiResponse<List<PoliceStation>>> getAllPoliceStations(){
+//        List<PoliceStation> stations = citizenService.getAllPoliceStation();
+//
+//        return ResponseEntity.ok(
+//                ApiResponse.success("",stations)
+//        );
+//    }
+
+    @GetMapping("/complaint/history/{citizenId}")
+    public ResponseEntity<ApiResponse<List<ComplaintHistoryDto>>> getCitizenHistory(@PathVariable("citizenId") Long citizenId) {
+        List<ComplaintHistoryDto> history = complaintService.getCitizenComplaints(citizenId);
+        return ResponseEntity.ok(ApiResponse.of(HttpStatus.OK, "Citizen history retrieved", history));
+    }
 }
 

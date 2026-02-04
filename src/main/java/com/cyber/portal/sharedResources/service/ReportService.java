@@ -43,8 +43,6 @@ public class ReportService {
                   .append(m.getMessage()).append("\n");
         }
 
-        // In a real implementation with iText, we would generate a proper PDF.
-        // For now, we return the text report as a byte array for demonstration.
         return report.toString().getBytes(StandardCharsets.UTF_8);
     }
 }
