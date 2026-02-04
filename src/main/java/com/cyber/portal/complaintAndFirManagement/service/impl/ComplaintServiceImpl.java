@@ -5,10 +5,7 @@ import com.cyber.portal.citizenManagement.entity.Citizen;
 import com.cyber.portal.citizenManagement.entity.PoliceOfficer;
 import com.cyber.portal.citizenManagement.entity.PoliceStation;
 import com.cyber.portal.citizenManagement.repository.CitizenRepository;
-import com.cyber.portal.complaintAndFirManagement.dto.AssignedOfficerDTO;
-import com.cyber.portal.complaintAndFirManagement.dto.ComplaintDto;
-import com.cyber.portal.complaintAndFirManagement.dto.ComplaintRequestDTO;
-import com.cyber.portal.complaintAndFirManagement.dto.ComplaintTimelineResponseDTO;
+import com.cyber.portal.complaintAndFirManagement.dto.*;
 import com.cyber.portal.complaintAndFirManagement.entity.Complaint;
 import com.cyber.portal.complaintAndFirManagement.entity.ComplaintTimeline;
 import com.cyber.portal.complaintAndFirManagement.entity.FIR;
@@ -24,6 +21,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -144,7 +142,7 @@ public class ComplaintServiceImpl implements ComplaintService {
             List<Complaint>complaints= complaintRepository.findAll();
             return complaints.stream()
                     .map(c->ComplaintDto.builder()
-                    .id(c.getId())
+                            .id(c.getId())
                             .acknowledgementNo(c.getAcknowledgementNo())
                             .category(c.getCategory())
 
@@ -211,17 +209,27 @@ public class ComplaintServiceImpl implements ComplaintService {
         if (officer == null) {
             throw new RuntimeException("Officers not found");
         }
-        Citizen citizen = officer.getCitizen();
-        PoliceStation station = officer.getPoliceStation();
         AssignedOfficerDTO dto = new AssignedOfficerDTO();
-        dto.setOfficerId(officer.getOfficerId());
-        dto.setOfficerName(citizen.getName());
+        dto.setId(officer.getId());
         dto.setRank(officer.getRank());
-        dto.setBadgeNumber(officer.getBadgeNumber());
-        dto.setMobileNo(citizen.getMobileNo());
-        dto.setEmail(citizen.getEmail());
+        dto.setOfficerCode(officer.getOfficerCode());
+        dto.setName(officer.getName());
+        dto.setState(officer.getState().toString());
 
         return dto;
+    }
+
+    public List<ComplaintMonthlyCountDto> getMonthlyComplaintStats() {
+        int year = LocalDateTime.now().getYear();
+        List<Object[]> rows = complaintRepository.getComplaintCountMonthWise(year);
+
+        return rows.stream()
+                .map(r -> new ComplaintMonthlyCountDto(
+                        ((Number) r[0]).intValue(),
+                        ((Number) r[1]).intValue(),
+                        ((Number) r[2]).longValue()
+                ))
+                .toList();
     }
 
 }

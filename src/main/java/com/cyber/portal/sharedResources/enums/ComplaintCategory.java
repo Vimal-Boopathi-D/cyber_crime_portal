@@ -10,7 +10,7 @@ public enum ComplaintCategory {
     HACKING("Hacking"),
     OTHER_CYBERCRIME("Other Cyber Crime");
 
-private final String category;
+    private final String category;
 
     ComplaintCategory(String category) {
         this.category=category;

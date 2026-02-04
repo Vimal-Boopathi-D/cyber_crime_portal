@@ -31,9 +31,8 @@ public class PoliceController {
     @PostMapping("/complaints/{id}/upload-fir")
     public ResponseEntity<ApiResponse<FIR>> uploadFIR(
             @PathVariable Long id,
-            @RequestParam String firNo,
             @RequestParam Long officerId) {
-       documentService.uploadFIR(id, firNo, officerId);
+       documentService.uploadFIR(id, officerId);
         return ResponseEntity.ok(ApiResponse.of(HttpStatus.OK, "FIR uploaded successfully",null));
     }
 
