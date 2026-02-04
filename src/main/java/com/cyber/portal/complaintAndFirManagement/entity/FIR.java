@@ -21,7 +21,7 @@ public class FIR {
     @Column(unique = true, nullable = false)
     private String firNo;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "complaint_id", nullable = false)
     private Complaint complaint;
 

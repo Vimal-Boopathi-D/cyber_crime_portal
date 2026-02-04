@@ -25,22 +25,10 @@ public class CitizenServiceImpl implements CitizenService {
     private final PoliceStationRepository policeStationRepository;
 
     @Transactional
-    public Citizen registerCitizen(Citizen citizen, Long stationId, String badgeNumber, String rank) {
+    public Citizen registerCitizen(Citizen citizen) {
         String encryptedPassword = passwordEncoder.encode(citizen.getPassword());
         citizen.setPassword(encryptedPassword);
-        Citizen citizenSaved = citizenRepository.save(citizen);
-        if (citizenSaved.getRole()== UserRole.POLICE){
-            PoliceStation policeStation = policeStationRepository.getByStationId(stationId);
-            PoliceOfficer policeOfficer = new PoliceOfficer();
-            policeOfficer.setPoliceStation(policeStation);
-            policeOfficer.setCitizen(citizenSaved);
-            policeOfficer.setBadgeNumber(badgeNumber);
-            policeOfficer.setRank(rank);
-            policeOfficer.setActiveCases(0);
-            policeOfficer.setIsAvailable(true);
-            policeOfficerRepository.save(policeOfficer);
-        }
-        return citizen;
+        return citizenRepository.save(citizen);
     }
 
     @Override

@@ -31,16 +31,16 @@ public class DocumentController {
     }
 
 
-    @GetMapping("/fir/{complaintId}")
-    public ResponseEntity<byte[]> downloadFIR(@PathVariable Long complaintId) {
+    @GetMapping("/fir/{firId}")
+    public ResponseEntity<byte[]> downloadFIR(@PathVariable Long firId) {
 
-        byte[] pdfBytes = documentService.getFIRCopy(complaintId);
+        byte[] pdfBytes = documentService.getFIRCopy(firId);
 
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_PDF)
                 .header(
                         HttpHeaders.CONTENT_DISPOSITION,
-                        "attachment; filename=FIR_" + complaintId + ".pdf"
+                        "attachment; filename=FIR_" + firId + ".pdf"
                 )
                 .contentLength(pdfBytes.length)
                 .body(pdfBytes);

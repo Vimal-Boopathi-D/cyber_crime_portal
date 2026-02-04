@@ -1,9 +1,6 @@
 package com.cyber.portal.complaintAndFirManagement.controller;
 
-import com.cyber.portal.complaintAndFirManagement.dto.AssignedOfficerDTO;
-import com.cyber.portal.complaintAndFirManagement.dto.ComplaintDto;
-import com.cyber.portal.complaintAndFirManagement.dto.ComplaintRequestDTO;
-import com.cyber.portal.complaintAndFirManagement.dto.ComplaintTimelineResponseDTO;
+import com.cyber.portal.complaintAndFirManagement.dto.*;
 import com.cyber.portal.citizenManagement.entity.PoliceOfficer;
 import com.cyber.portal.complaintAndFirManagement.entity.Complaint;
 import com.cyber.portal.complaintAndFirManagement.service.ComplaintService;
@@ -71,5 +68,13 @@ public class ComplaintController {
     public AssignedOfficerDTO getAssignedOfficer(
             @PathVariable Long complaintId) {
         return complaintService.getAssignedOfficer(complaintId);
+    }
+
+    @GetMapping("/monthly-count")
+    public ResponseEntity<ApiResponse<List<ComplaintMonthlyCountDto>>> getMonthlyComplaintCount() {
+
+        List<ComplaintMonthlyCountDto> complaintsCount =  complaintService.getMonthlyComplaintStats();
+
+        return ResponseEntity.ok(ApiResponse.of(HttpStatus.OK, "Fetched all complaints count", complaintsCount));
     }
 }

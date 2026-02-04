@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CitizenService {
-    Citizen registerCitizen(Citizen citizen, Long stationId, String badgeNumber, String rank);
+    Citizen registerCitizen(Citizen citizen);
     Optional<Citizen> getCitizenByLoginId(String email, String password);
     List<PoliceStation> getAllPoliceStation();
     List<PoliceOfficer> getAllPoliceOfficers();
