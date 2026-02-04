@@ -24,11 +24,8 @@ public class CitizenController {
     private final ComplaintService complaintService;
 
     @PostMapping("/register")
-    public ResponseEntity<ApiResponse<Citizen>> register(@RequestBody Citizen citizen,
-                                                         @RequestParam(required = false) Long stationId,
-                                                         @RequestParam(required = false) String badgeNumber,
-                                                         @RequestParam(required = false) String rank) {
-        Citizen saved = citizenService.registerCitizen(citizen, stationId, badgeNumber, rank);
+    public ResponseEntity<ApiResponse<Citizen>> register(@RequestBody Citizen citizen) {
+        Citizen saved = citizenService.registerCitizen(citizen);
         return ResponseEntity.ok(ApiResponse.of(HttpStatus.OK, "Citizen registered successfully", saved));
     }
 

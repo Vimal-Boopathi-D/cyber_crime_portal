@@ -8,15 +8,9 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class AssignedOfficerDTO {
-    private Long officerId;
-    private String officerName;
+    private Long id;
+    private String Name;
     private String rank;
-    private String badgeNumber;
-
-    private String policeStation;
-    private String district;
     private String state;
-
-    private String mobileNo;
-    private String email;
+    private String officerCode;
 }

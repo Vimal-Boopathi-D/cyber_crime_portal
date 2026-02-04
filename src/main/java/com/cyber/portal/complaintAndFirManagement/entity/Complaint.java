@@ -21,7 +21,7 @@ public class Complaint {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false)
+    @Column(name = "acknowledgement_no", unique = true, nullable = false)
     private String acknowledgementNo;
 
     @Enumerated(EnumType.STRING)
@@ -53,7 +53,10 @@ public class Complaint {
     @OneToOne(mappedBy = "complaint", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private FIR fir;
 
+    @Column(name = "create_at")
     private LocalDateTime createdAt;
+
+    @Column(name = "update_at")
     private LocalDateTime updatedAt;
 
     @PrePersist

@@ -1,5 +1,6 @@
 package com.cyber.portal.complaintAndFirManagement.repository;
 
+import com.cyber.portal.complaintAndFirManagement.dto.ComplaintMonthlyCountDto;
 import com.cyber.portal.complaintAndFirManagement.entity.Complaint;
 import com.cyber.portal.sharedResources.enums.IncidentStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -32,5 +33,27 @@ public interface ComplaintRepository extends JpaRepository<Complaint, Long> {
     long countByCitizenId(Long citizenId);
 
     long countByCitizenIdAndStatus(Long citizenId, IncidentStatus status);
+
+    @Query(
+            value = """
+        SELECT
+            :year AS year,
+            m.month AS month,
+            COALESCE(COUNT(c.id), 0) AS totalComplaints
+        FROM generate_series(1, 12) AS m(month)
+        LEFT JOIN complaints c
+            ON EXTRACT(MONTH FROM c.created_at) = m.month
+            AND EXTRACT(YEAR FROM c.created_at) = :year
+        GROUP BY m.month
+        ORDER BY m.month
+    """,
+            nativeQuery = true
+    )
+    List<Object[]> getComplaintCountMonthWise(@Param("year") int year);
+
+
+
+
+
 
 }

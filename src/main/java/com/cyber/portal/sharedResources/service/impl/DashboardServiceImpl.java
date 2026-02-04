@@ -89,8 +89,8 @@ public class DashboardServiceImpl implements DashboardService {
             if (firOpt.isPresent()) {
                 var officer = firOpt.get().getGeneratedBy();
                 complaintMap.put("assignedOfficer", officer);
-                complaintMap.put("officerCitizen", officer.getCitizen());
-                complaintMap.put("policeStation", officer.getPoliceStation());
+                complaintMap.put("officerName", officer.getName());
+                complaintMap.put("policeStationState", officer.getState());
             }
 
             complaintMap.put("gacAppeal",

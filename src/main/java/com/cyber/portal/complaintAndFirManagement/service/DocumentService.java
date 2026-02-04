@@ -4,7 +4,7 @@ import com.cyber.portal.complaintAndFirManagement.entity.FIR;
 
 public interface DocumentService {
     byte[] generateComplaintReport(Long complaintId);
-    byte[] getFIRCopy(Long complaintId);
-    void uploadFIR(Long complaintId, String firNo, Long officerId);
+    byte[] getFIRCopy(Long firId);
+    void uploadFIR(Long complaintId, Long officerId);
     byte[] generateCitizenComplaintExcel(Long citizenId);
 }
