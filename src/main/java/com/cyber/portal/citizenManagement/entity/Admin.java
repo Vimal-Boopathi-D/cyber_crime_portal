@@ -9,13 +9,14 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "citizens")
+@Table(name = "admin")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Citizen {
+public class Admin {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,7 +30,6 @@ public class Citizen {
     @Column(unique = true)
     private String email;
 
-
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column
     private String password;
@@ -39,8 +39,6 @@ public class Citizen {
 
     @Enumerated(EnumType.STRING)
     private UserRole role;
-
-    private String address;
 
     private LocalDateTime registeredAt;
 

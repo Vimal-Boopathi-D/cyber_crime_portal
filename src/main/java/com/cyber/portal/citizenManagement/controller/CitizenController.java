@@ -2,6 +2,7 @@ package com.cyber.portal.citizenManagement.controller;
 
 import com.cyber.portal.citizenManagement.dto.ComplaintHistoryDto;
 import com.cyber.portal.citizenManagement.dto.LoginDto;
+import com.cyber.portal.citizenManagement.entity.Admin;
 import com.cyber.portal.citizenManagement.entity.Citizen;
 import com.cyber.portal.citizenManagement.entity.PoliceOfficer;
 import com.cyber.portal.citizenManagement.entity.PoliceStation;
@@ -53,6 +54,14 @@ public class CitizenController {
     public ResponseEntity<ApiResponse<List<ComplaintHistoryDto>>> getCitizenHistory(@PathVariable("citizenId") Long citizenId) {
         List<ComplaintHistoryDto> history = complaintService.getCitizenComplaints(citizenId);
         return ResponseEntity.ok(ApiResponse.of(HttpStatus.OK, "Citizen history retrieved", history));
+    }
+
+    @PostMapping("/admin/login")
+    public ResponseEntity<ApiResponse<Admin>> getAdmin(@RequestBody LoginDto loginDto) {
+        return citizenService.getAdminByLoginId(loginDto.getEmail(), loginDto.getPassword())
+                .map(citizen -> ResponseEntity.ok(ApiResponse.of(HttpStatus.OK, "Admin found", citizen)))
+                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(ApiResponse.of(HttpStatus.NOT_FOUND, "Admin not found", null)));
     }
 }
 
