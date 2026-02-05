@@ -5,10 +5,12 @@ import com.cyber.portal.sharedResources.enums.VolunteerStatus;
 import com.cyber.portal.volunteerManagement.entity.Volunteer;
 import com.cyber.portal.volunteerManagement.repository.VolunteerRepository;
 import com.cyber.portal.sharedResources.dto.ApiResponse;
+import com.cyber.portal.volunteerManagement.service.VolunteerCsvService;
 import com.cyber.portal.volunteerManagement.service.VolunteerService;
 import jakarta.validation.Valid;
 import com.cyber.portal.volunteerManagement.service.VolunteerService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +26,7 @@ import java.util.List;
 public class VolunteerController {
     private final VolunteerRepository volunteerRepository;
     private final VolunteerService volunteerService;
+    private final VolunteerCsvService volunteerCsvService;
 
     @PostMapping(
             value = "/register",
@@ -58,4 +61,18 @@ public class VolunteerController {
         volunteerService.updateStatus(id, status);
         return ResponseEntity.ok(ApiResponse.of(HttpStatus.OK, "Volunteer status updated", null));
     }
+
+
+    @GetMapping("/approved/csv")
+    public ResponseEntity<byte[]> downloadApprovedVolunteersCsv() {
+
+        String csvData = volunteerCsvService.generateApprovedVolunteersCsv();
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment; filename=approved_volunteers.csv")
+                .contentType(MediaType.TEXT_PLAIN)
+                .body(csvData.getBytes());
+    }
+
 }
