@@ -34,8 +34,6 @@ public class Volunteer {
     @Enumerated(EnumType.STRING)
     private VolunteerStatus status;
 
-    @Enumerated(EnumType.STRING)
-    private VolunteerType type;
     @Column(nullable = false)
     private String email;
 
