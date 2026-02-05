@@ -14,6 +14,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.time.LocalDateTime;
 import java.util.UUID;
 import java.util.List;
 
@@ -69,7 +70,9 @@ public class VolunteerServiceImpl implements VolunteerService {
                     .district(dto.getDistrict())
                     .cityOrVillage(dto.getCityOrVillage())
                     .pincode(dto.getPincode())
-                    .approved(false)
+                    .status(VolunteerStatus.PENDING)
+                    .createdAt(LocalDateTime.now())
+                    .updatedAt(LocalDateTime.now())
                     .build();
 
 
@@ -89,5 +92,11 @@ public class VolunteerServiceImpl implements VolunteerService {
          Volunteer volunteer= volunteerRepository.findById(id).orElseThrow(()->new RuntimeException("No Volunteer Found"));
          volunteer.setStatus(status);
          volunteerRepository.save(volunteer);
+    }
+
+    @Override
+    public List<Volunteer> getAllVolunteersList() {
+        List<Volunteer> volunteers = volunteerRepository.findAll();
+        return volunteers;
     }
 }

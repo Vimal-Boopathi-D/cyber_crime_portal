@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "volunteers")
@@ -63,14 +64,21 @@ public class Volunteer {
     private String cityOrVillage;
     private String pincode;
 
-    @Column(nullable = false)
-    private Boolean approved;
+    @Column(name = "create_at")
+    private LocalDateTime createdAt;
+
+    @Column(name = "update_at")
+    private LocalDateTime updatedAt;
 
     @PrePersist
-    public void setDefaultValues() {
-        if (approved == null) {
-            approved = false;
-        }
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = LocalDateTime.now();
     }
 
 }
