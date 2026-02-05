@@ -136,7 +136,8 @@ public class DashboardServiceImpl implements DashboardService {
         long closed = complaintRepository.countByCitizenIdAndStatus(
                 citizenId, IncidentStatus.CLOSED
         );
-        long pending = total - closed;
+        long resolved= complaintRepository.countByCitizenIdAndStatus(citizenId,IncidentStatus.RESOLVED);
+        long pending = total - closed+resolved;
         citizenSummaryDTO dto = new citizenSummaryDTO();
         dto.setTotalComplaints(total);
         dto.setClosedCases(closed);
