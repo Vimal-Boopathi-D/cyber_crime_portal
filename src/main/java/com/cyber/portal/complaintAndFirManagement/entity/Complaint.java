@@ -59,6 +59,9 @@ public class Complaint {
     @Column(name = "update_at")
     private LocalDateTime updatedAt;
 
+    @Column(name = "resolved_at")
+    private LocalDateTime resolvedAt;
+
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
