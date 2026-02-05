@@ -7,6 +7,7 @@ import com.cyber.portal.volunteerManagement.repository.VolunteerRepository;
 import com.cyber.portal.sharedResources.dto.ApiResponse;
 import com.cyber.portal.volunteerManagement.service.VolunteerCsvService;
 import com.cyber.portal.volunteerManagement.service.VolunteerService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import com.cyber.portal.volunteerManagement.service.VolunteerService;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.core.io.Resource;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -75,4 +78,52 @@ public class VolunteerController {
                 .body(csvData.getBytes());
     }
 
+
+    @GetMapping("/resume/{id}")
+    public ResponseEntity<Resource> getResume(@PathVariable Long id, HttpServletRequest request) {
+
+        Resource resource = volunteerService.getResumeResource(id);
+
+        String contentType;
+        try {
+            contentType = request.getServletContext()
+                    .getMimeType(resource.getFile().getAbsolutePath());
+        } catch (IOException ex) {
+            contentType = null;
+        }
+
+        if (contentType == null) {
+            contentType = MediaType.APPLICATION_OCTET_STREAM_VALUE;
+        }
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(contentType))
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment; filename=\"" + resource.getFilename() + "\"")
+                .body(resource);
+    }
+//
+//    @GetMapping("/resume/{id}")
+//    public ResponseEntity<Resource> getPhoto(@PathVariable Long id, HttpServletRequest request) {
+//
+//        Resource resource = volunteerService.getResumeResource(id);
+//
+//        String contentType;
+//        try {
+//            contentType = request.getServletContext()
+//                    .getMimeType(resource.getFile().getAbsolutePath());
+//        } catch (IOException ex) {
+//            contentType = null;
+//        }
+//
+//        if (contentType == null) {
+//            contentType = MediaType.APPLICATION_OCTET_STREAM_VALUE;
+//        }
+//
+//        return ResponseEntity.ok()
+//                .contentType(MediaType.parseMediaType(contentType))
+//                .header(HttpHeaders.CONTENT_DISPOSITION,
+//                        "attachment; filename=\"" + resource.getFilename() + "\"")
+//                .body(resource);
+//    }
 }
