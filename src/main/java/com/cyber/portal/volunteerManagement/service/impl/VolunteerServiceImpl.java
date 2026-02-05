@@ -6,10 +6,13 @@ import com.cyber.portal.volunteerManagement.entity.Volunteer;
 import com.cyber.portal.volunteerManagement.repository.VolunteerRepository;
 import com.cyber.portal.volunteerManagement.service.VolunteerService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -99,4 +102,27 @@ public class VolunteerServiceImpl implements VolunteerService {
         List<Volunteer> volunteers = volunteerRepository.findAll();
         return volunteers;
     }
+
+    @Override
+    public Resource getResumeResource(Long id) {
+        Volunteer volunteer = volunteerRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("No Volunteer Found"));
+
+        Path resumePath = Paths.get(volunteer.getPassportPhotoPath()).normalize();
+
+        if (!Files.exists(resumePath)) {
+            throw new RuntimeException("Resume file not found");
+        }
+
+        try {
+            Resource resource = new UrlResource(resumePath.toUri());
+            if (resource.isReadable()) {
+                return resource;
+            }
+            throw new RuntimeException("File not readable");
+        } catch (MalformedURLException e) {
+            throw new RuntimeException("Invalid file path", e);
+        }
+    }
+
 }

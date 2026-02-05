@@ -1,6 +1,7 @@
 package com.cyber.portal.volunteerManagement.service;
 
 import com.cyber.portal.volunteerManagement.dto.VolunteerRegistrationDto;
+import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 import com.cyber.portal.sharedResources.enums.VolunteerStatus;
 import com.cyber.portal.volunteerManagement.entity.Volunteer;
@@ -12,5 +13,5 @@ public interface VolunteerService {
     List<Volunteer> getVolunteerByStatus(VolunteerStatus status);
     void updateStatus(Long id, VolunteerStatus status);
     List<Volunteer> getAllVolunteersList();
-
+    Resource getResumeResource(Long id);
 }
