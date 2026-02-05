@@ -12,4 +12,5 @@ public interface VolunteerService {
     List<Volunteer> getVolunteerByStatus(VolunteerStatus status);
     void updateStatus(Long id, VolunteerStatus status);
     List<Volunteer> getAllVolunteersList();
+
 }
