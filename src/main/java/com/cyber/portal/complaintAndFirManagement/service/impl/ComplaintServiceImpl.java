@@ -122,6 +122,9 @@ public class ComplaintServiceImpl implements ComplaintService {
     public Complaint updateStatus(Long id, IncidentStatus status, String remarks, String user) {
         Complaint complaint = complaintRepository.findById(id)
                 .orElseThrow(() -> new PortalException("Not Found", HttpStatus.NOT_FOUND));
+        if (complaint.getStatus()==status) {
+            return complaint;
+        }
         complaint.setStatus(status);
         Complaint updated = complaintRepository.save(complaint);
         saveTimeline(updated, status, remarks, user);
