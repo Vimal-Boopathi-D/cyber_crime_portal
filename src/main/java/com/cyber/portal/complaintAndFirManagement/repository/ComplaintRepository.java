@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,9 +17,19 @@ public interface ComplaintRepository extends JpaRepository<Complaint, Long> {
     @Query("SELECT c FROM Complaint c WHERE c.citizen.id = :citizenId")
     List<Complaint> findByCitizenId(@Param("citizenId") Long citizenId);
 
-
     @org.springframework.data.jpa.repository.Query("SELECT c.category, COUNT(c) FROM Complaint c GROUP BY c.category")
     List<Object[]> countComplaintsByCategory();
+
+    @Query("""
+    SELECT c.category, COUNT(c)
+    FROM Complaint c
+    WHERE c.createdAt >= :fromDate
+    GROUP BY c.category
+    """)
+    List<Object[]> countComplaintsByCategoryFromDate(
+            @Param("fromDate") LocalDateTime fromDate
+    );
+
 
     @org.springframework.data.jpa.repository.Query("SELECT c.status, COUNT(c) FROM Complaint c GROUP BY c.status")
     List<Object[]> countComplaintsByStatus();
@@ -51,9 +62,12 @@ public interface ComplaintRepository extends JpaRepository<Complaint, Long> {
     )
     List<Object[]> getComplaintCountMonthWise(@Param("year") int year);
 
-
-
-
+    @Query("""
+    SELECT AVG(TIMESTAMPDIFF(DAY, c.createdAt, c.resolvedAt))
+    FROM Complaint c
+    WHERE c.resolvedAt IS NOT NULL
+""")
+    Double findAverageProcessingTime();
 
 
 }

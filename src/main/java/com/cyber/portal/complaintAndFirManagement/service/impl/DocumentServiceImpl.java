@@ -177,7 +177,7 @@ public class DocumentServiceImpl implements DocumentService {
     @Override
     public byte[] getFIRCopy(Long firId) {
         // Mock FIR retrieval
-        FIR fir = firRepository.findById(firId)
+        FIR fir = firRepository.getFir(firId)
                 .orElseThrow(() -> new RuntimeException("FIR not found"));
 
         Complaint complaint = fir.getComplaint();
