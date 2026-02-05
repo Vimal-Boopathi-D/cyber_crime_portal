@@ -8,6 +8,8 @@ import com.cyber.portal.complaintAndFirManagement.repository.GACAppealRepository
 import com.cyber.portal.sharedResources.dto.citizenSummaryDTO;
 import com.cyber.portal.sharedResources.enums.IncidentStatus;
 import com.cyber.portal.sharedResources.service.DashboardService;
+import com.cyber.portal.suspectManagement.repository.SuspectRepository;
+import com.cyber.portal.volunteerManagement.repository.VolunteerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +27,8 @@ public class DashboardServiceImpl implements DashboardService {
     private final FIRRepository firRepository;
     private final GACAppealRepository gacAppealRepository;
     private final ComplaintTimelineRepository timelineRepository;
+    private final SuspectRepository suspectRepository;
+    private final VolunteerRepository volunteerRepository;
 
     @Override
     public Map<String, Long> getComplaintsByCategory(Long periodDays) {
@@ -49,6 +53,8 @@ public class DashboardServiceImpl implements DashboardService {
     public Map<String, Object> getOverallStats() {
         Map<String, Object> stats = new HashMap<>();
         long total = complaintRepository.count();
+        long SuspectCount=suspectRepository.count();
+        long volunteerCount=volunteerRepository.count();
         Map<String, Long> statusStats = getComplaintsByStatus();
         long resolved = statusStats.getOrDefault("CLOSED", 0L) + statusStats.getOrDefault("RESOLVED", 0L);
         Double avgProcessingTime = complaintRepository
@@ -62,6 +68,8 @@ public class DashboardServiceImpl implements DashboardService {
         stats.put("byRegion", getComplaintsByState());
         stats.put("averageProcessingTime",
                 avgProcessingTime != null ? avgProcessingTime : 0);
+        stats.put("Suspect Report",SuspectCount);
+        stats.put("Volunteers",volunteerCount);
         return stats;
     }
 
