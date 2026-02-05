@@ -30,6 +30,21 @@ public interface ComplaintRepository extends JpaRepository<Complaint, Long> {
             @Param("fromDate") LocalDateTime fromDate
     );
 
+    long countByCreatedAtBetween(LocalDateTime start, LocalDateTime end);
+
+    long countByStatusInAndCreatedAtBetween(
+            List<IncidentStatus> statuses,
+            LocalDateTime start,
+            LocalDateTime end
+    );
+
+    long countByStatusNotInAndCreatedAtBetween(
+            List<IncidentStatus> statuses,
+            LocalDateTime start,
+            LocalDateTime end
+    );
+
+
 
     @org.springframework.data.jpa.repository.Query("SELECT c.status, COUNT(c) FROM Complaint c GROUP BY c.status")
     List<Object[]> countComplaintsByStatus();
