@@ -46,6 +46,18 @@ public class Complaint {
     @Enumerated(EnumType.STRING)
     private IncidentStatus status;
 
+    @Column(name = "suspect_name")
+    private String suspectName;
+
+    @Column(name = "suspect_contact")
+    private String suspectContact;
+
+    @Column(columnDefinition = "TEXT", name = "suspect_identification_details")
+    private String suspectIdentificationDetails;
+
+    @Column(columnDefinition = "TEXT", name = "suspect_additional_info")
+    private String suspectAdditionalInfo;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "citizen_id")
     private Citizen citizen;
@@ -58,6 +70,9 @@ public class Complaint {
 
     @Column(name = "update_at")
     private LocalDateTime updatedAt;
+
+    @Column(name = "resolved_at")
+    private LocalDateTime resolvedAt;
 
     @PrePersist
     protected void onCreate() {

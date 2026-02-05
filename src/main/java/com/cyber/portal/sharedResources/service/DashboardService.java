@@ -5,7 +5,7 @@ import com.cyber.portal.sharedResources.dto.citizenSummaryDTO;
 import java.util.Map;
 
 public interface DashboardService {
-    Map<String, Long> getComplaintsByCategory();
+    Map<String, Long> getComplaintsByCategory(Long periodDays);
     Map<String, Long> getComplaintsByStatus();
     Map<String, Long> getComplaintsByState();
     Map<String, Object> getOverallStats();

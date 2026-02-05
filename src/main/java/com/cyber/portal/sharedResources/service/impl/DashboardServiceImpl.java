@@ -13,6 +13,7 @@ import com.cyber.portal.volunteerManagement.repository.VolunteerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,8 +31,12 @@ public class DashboardServiceImpl implements DashboardService {
     private final VolunteerRepository volunteerRepository;
 
     @Override
-    public Map<String, Long> getComplaintsByCategory() {
-        return convertToMap(complaintRepository.countComplaintsByCategory());
+    public Map<String, Long> getComplaintsByCategory(Long periodDays) {
+        if (periodDays == null) {
+            return convertToMap(complaintRepository.countComplaintsByCategory());
+        }else {
+        return convertToMap(complaintRepository.countComplaintsByCategoryFromDate(LocalDateTime.now().minusDays(periodDays)));
+        }
     }
 
     @Override
@@ -52,12 +57,17 @@ public class DashboardServiceImpl implements DashboardService {
         long volunteerCount=volunteerRepository.count();
         Map<String, Long> statusStats = getComplaintsByStatus();
         long resolved = statusStats.getOrDefault("CLOSED", 0L) + statusStats.getOrDefault("RESOLVED", 0L);
+        Double avgProcessingTime = complaintRepository
+                .findAverageProcessingTime();
+
         stats.put("totalComplaints", total);
         stats.put("pendingComplaints", total - resolved);
         stats.put("resolvedComplaints", resolved);
-        stats.put("byCategory", getComplaintsByCategory());
+        stats.put("byCategory", getComplaintsByCategory(null));
         stats.put("byStatus", statusStats);
         stats.put("byRegion", getComplaintsByState());
+        stats.put("averageProcessingTime",
+                avgProcessingTime != null ? avgProcessingTime : 0);
         stats.put("Suspect Report",SuspectCount);
         stats.put("Volunteers",volunteerCount);
         return stats;

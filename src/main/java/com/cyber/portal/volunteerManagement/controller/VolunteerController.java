@@ -42,6 +42,7 @@ public class VolunteerController {
     @GetMapping("/list")
     public ResponseEntity<ApiResponse<List<Volunteer>>> list() {
         List<Volunteer> volunteers = volunteerRepository.findAll();
+        volunteers.stream().filter(v->v.getStatus()== VolunteerStatus.PENDING);
         return ResponseEntity.ok(ApiResponse.of(HttpStatus.OK, "Volunteers retrieved", volunteers));
     }
 
@@ -51,4 +52,11 @@ public class VolunteerController {
         return ResponseEntity.ok(ApiResponse.of(HttpStatus.OK, "Volunteers retrieved", volunteers));
     }
 
+    @PutMapping("/{id}/status")
+    public ResponseEntity<ApiResponse<Volunteer>> updateStatus(
+            @PathVariable Long id,
+            @RequestParam VolunteerStatus status) {
+        volunteerService.updateStatus(id, status);
+        return ResponseEntity.ok(ApiResponse.of(HttpStatus.OK, "Volunteer status updated", null));
+    }
 }

@@ -1,18 +1,13 @@
 package com.cyber.portal.sharedResources.controller;
 
-import com.cyber.portal.complaintAndFirManagement.entity.ComplaintTimeline;
 import com.cyber.portal.sharedResources.dto.ApiResponse;
 import com.cyber.portal.sharedResources.dto.citizenSummaryDTO;
 import com.cyber.portal.sharedResources.service.DashboardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -27,8 +22,8 @@ public class DashboardController {
     }
 
     @GetMapping("/by-category")
-    public ResponseEntity<ApiResponse<Map<String, Long>>> getByCategory() {
-        return ResponseEntity.ok(ApiResponse.of(HttpStatus.OK, "Stats by category retrieved", dashboardService.getComplaintsByCategory()));
+    public ResponseEntity<ApiResponse<Map<String, Long>>> getByCategory(@RequestParam(required = false) Long periodDays) {
+        return ResponseEntity.ok(ApiResponse.of(HttpStatus.OK, "Stats by category retrieved", dashboardService.getComplaintsByCategory(periodDays)));
     }
 
     @GetMapping("/by-status")
