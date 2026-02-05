@@ -18,7 +18,6 @@ public class ComplaintDto {
     private ComplaintCategory category;
 
     private LocalDateTime incidentDate;
-    private String reasonForDelay;
     private String additionalInfo;
 
     private String incidentLocation;
@@ -37,6 +36,8 @@ public class ComplaintDto {
     private String citizenMobile;
     private Long firId;
     private String firNumber;
+    private String officerName;
+    private String officerState;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

@@ -5,6 +5,7 @@ import com.cyber.portal.citizenManagement.entity.Citizen;
 import com.cyber.portal.citizenManagement.entity.PoliceOfficer;
 import com.cyber.portal.citizenManagement.entity.PoliceStation;
 import com.cyber.portal.citizenManagement.repository.CitizenRepository;
+import com.cyber.portal.citizenManagement.repository.PoliceOfficerRepository;
 import com.cyber.portal.complaintAndFirManagement.dto.*;
 import com.cyber.portal.complaintAndFirManagement.entity.Complaint;
 import com.cyber.portal.complaintAndFirManagement.entity.ComplaintTimeline;
@@ -34,6 +35,7 @@ public class ComplaintServiceImpl implements ComplaintService {
     private final NotificationService notificationService;
     private final CitizenRepository citizenRepository;
     private final FIRRepository firRepository;
+    private final PoliceOfficerRepository policeOfficerRepository;
 
     @Override
     @Transactional
@@ -66,13 +68,13 @@ public class ComplaintServiceImpl implements ComplaintService {
     @Override
     public ComplaintDto getComplaintByAckNo(String ack) {
         Complaint complaint= complaintRepository.findByAcknowledgementNo(ack).orElseThrow(() -> new PortalException("Not Found", HttpStatus.NOT_FOUND));
+        PoliceOfficer policeOfficer = complaint.getFir().getGeneratedBy();
         return ComplaintDto.builder()
                 .id(complaint.getId())
                 .acknowledgementNo(complaint.getAcknowledgementNo())
                 .category(complaint.getCategory())
 
                 .incidentDate(complaint.getIncidentDate())
-                .reasonForDelay(complaint.getReasonForDelay())
                 .additionalInfo(complaint.getAdditionalInfo())
 
                 .incidentLocation(complaint.getIncidentLocation())
@@ -92,6 +94,8 @@ public class ComplaintServiceImpl implements ComplaintService {
                 .suspectContact(complaint.getSuspectContact())
                 .suspectIdentificationDetails(complaint.getSuspectIdentificationDetails())
                 .suspectAdditionalInfo(complaint.getSuspectAdditionalInfo())
+                .officerName(policeOfficer.getName())
+                .officerState(policeOfficer.getState().toString())
                 .build();
     }
 
@@ -155,7 +159,6 @@ public class ComplaintServiceImpl implements ComplaintService {
                             .category(c.getCategory())
 
                             .incidentDate(c.getIncidentDate())
-                            .reasonForDelay(c.getReasonForDelay())
                             .additionalInfo(c.getAdditionalInfo())
 
                             .incidentLocation(c.getIncidentLocation())
@@ -186,7 +189,6 @@ public class ComplaintServiceImpl implements ComplaintService {
                             .category(c.getCategory())
 
                             .incidentDate(c.getIncidentDate())
-                            .reasonForDelay(c.getReasonForDelay())
                             .additionalInfo(c.getAdditionalInfo())
 
                             .incidentLocation(c.getIncidentLocation())
