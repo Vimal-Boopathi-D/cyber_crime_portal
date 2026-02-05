@@ -13,6 +13,8 @@ import com.cyber.portal.volunteerManagement.repository.VolunteerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -60,6 +62,61 @@ public class DashboardServiceImpl implements DashboardService {
         Double avgProcessingTime = complaintRepository
                 .findAverageProcessingTime();
 
+        LocalDate today = LocalDate.now();
+
+        LocalDateTime startOfThisWeek =
+                today.with(DayOfWeek.MONDAY).atStartOfDay();
+
+        LocalDateTime startOfLastWeek =
+                startOfThisWeek.minusWeeks(1);
+
+        LocalDateTime endOfLastWeek =
+                startOfThisWeek.minusSeconds(1);
+
+        long lastWeekTotal =
+                complaintRepository.countByCreatedAtBetween(
+                        startOfLastWeek, endOfLastWeek);
+
+        long lastWeekClosed =
+                complaintRepository.countByStatusInAndCreatedAtBetween(
+                        List.of(IncidentStatus.CLOSED,IncidentStatus.RECEIVED),
+                        startOfLastWeek,
+                        endOfLastWeek);
+
+        long lastWeekPending =
+                complaintRepository.countByStatusNotInAndCreatedAtBetween(
+                        List.of(IncidentStatus.CLOSED,IncidentStatus.RECEIVED),
+                        startOfLastWeek,
+                        endOfLastWeek);
+
+        long thisWeekTotal =
+                complaintRepository.countByCreatedAtBetween(
+                        startOfThisWeek, LocalDateTime.now());
+
+        long thisWeekClosed =
+                complaintRepository.countByStatusInAndCreatedAtBetween(
+                        List.of(IncidentStatus.CLOSED,IncidentStatus.RESOLVED),
+                        startOfThisWeek,
+                        LocalDateTime.now());
+
+        long thisWeekPending =
+                complaintRepository.countByStatusNotInAndCreatedAtBetween(
+                        List.of(IncidentStatus.CLOSED,IncidentStatus.RESOLVED),
+                        startOfThisWeek,
+                        LocalDateTime.now());
+
+        double totalCountPercentage =
+                (thisWeekTotal == 0 && lastWeekTotal == 0 )? 0 :
+                        ((thisWeekTotal -lastWeekTotal) * 100.0) / (thisWeekTotal + lastWeekTotal);
+
+        double totalWeekClosedPercentage =
+                (thisWeekClosed == 0 && lastWeekClosed == 0) ? 0 :
+                        ((thisWeekClosed -lastWeekClosed) * 100.0) / (thisWeekClosed + lastWeekClosed);
+
+        double totalWeekPendingPercentage =
+                (thisWeekPending == 0 && lastWeekPending == 0) ? 0 :
+                        ((thisWeekPending -lastWeekPending) * 100.0) / (thisWeekPending + lastWeekPending);
+
         stats.put("totalComplaints", total);
         stats.put("pendingComplaints", total - resolved);
         stats.put("resolvedComplaints", resolved);
@@ -70,6 +127,10 @@ public class DashboardServiceImpl implements DashboardService {
                 avgProcessingTime != null ? avgProcessingTime : 0);
         stats.put("Suspect Report",SuspectCount);
         stats.put("Volunteers",volunteerCount);
+        stats.put("totalCountPercentage", totalCountPercentage);
+        stats.put("totalWeekClosedPercentage", totalWeekClosedPercentage);
+        stats.put("totalWeekPendingPercentage", totalWeekPendingPercentage);
+
         return stats;
     }
 

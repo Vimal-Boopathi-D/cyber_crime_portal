@@ -1,10 +1,15 @@
 package com.cyber.portal.bootstrap;
 
+import com.cyber.portal.citizenManagement.entity.Admin;
 import com.cyber.portal.citizenManagement.entity.PoliceOfficer;
+import com.cyber.portal.citizenManagement.repository.AdminRepository;
 import com.cyber.portal.citizenManagement.repository.PoliceOfficerRepository;
+import com.cyber.portal.sharedResources.enums.Gender;
 import com.cyber.portal.sharedResources.enums.State;
+import com.cyber.portal.sharedResources.enums.UserRole;
 import jakarta.annotation.PostConstruct;
 import lombok.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -13,6 +18,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PoliceOfficerDataLoader {
     private final PoliceOfficerRepository policeOfficerRepository;
+    private final AdminRepository adminRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @PostConstruct
     public void loadMockPoliceOfficers() {
@@ -126,5 +133,25 @@ public class PoliceOfficerDataLoader {
                 .rank(rank)
                 .state(state)
                 .build();
+    }
+
+    @PostConstruct
+    public void createPoliceAdmin() {
+
+        // prevent duplicate insertion on every restart
+        if (adminRepository.existsByMobileNo("9025873326")) {
+            return;
+        }
+
+        Admin admin = Admin.builder()
+                .mobileNo("9025873326")
+                .name("Sudha Rani")
+                .email("officer@gov.in")
+                .password(passwordEncoder.encode("Officer@123"))
+                .gender(Gender.FEMALE)
+                .role(UserRole.POLICE_ADMIN)
+                .build();
+
+        adminRepository.save(admin);
     }
 }

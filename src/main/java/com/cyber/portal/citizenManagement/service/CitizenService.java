@@ -1,5 +1,6 @@
 package com.cyber.portal.citizenManagement.service;
 
+import com.cyber.portal.citizenManagement.entity.Admin;
 import com.cyber.portal.citizenManagement.entity.Citizen;
 import com.cyber.portal.citizenManagement.entity.PoliceOfficer;
 import com.cyber.portal.citizenManagement.entity.PoliceStation;
@@ -12,4 +13,5 @@ public interface CitizenService {
     Optional<Citizen> getCitizenByLoginId(String email, String password);
     List<PoliceStation> getAllPoliceStation();
     List<PoliceOfficer> getAllPoliceOfficers();
+    Optional<Admin> getAdminByLoginId(String email, String password);
 }
