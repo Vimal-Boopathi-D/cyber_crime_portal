@@ -34,6 +34,10 @@ public class ComplaintRequestDTO {
 
     private String policeStation;
 
+    private String suspectName;
+    private String suspectContact;
+    private String suspectIdentificationDetails;
+    private String suspectAdditionalInfo;
     @NotNull(message = "Citizen ID is required")
     private Long citizenId;
 }

@@ -28,6 +28,10 @@ public class ComplaintDto {
 
     private IncidentStatus status;
 
+    private String suspectName;
+    private String suspectContact;
+    private String suspectIdentificationDetails;
+    private String suspectAdditionalInfo;
     private Long citizenId;
     private String citizenName;
     private String citizenMobile;

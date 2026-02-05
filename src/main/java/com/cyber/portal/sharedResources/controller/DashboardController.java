@@ -1,6 +1,5 @@
 package com.cyber.portal.sharedResources.controller;
 
-import com.cyber.portal.complaintAndFirManagement.entity.ComplaintTimeline;
 import com.cyber.portal.sharedResources.dto.ApiResponse;
 import com.cyber.portal.sharedResources.dto.citizenSummaryDTO;
 import com.cyber.portal.sharedResources.service.DashboardService;
@@ -9,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 
 @RestController

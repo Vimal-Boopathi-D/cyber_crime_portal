@@ -10,4 +10,5 @@ import java.util.List;
 public interface VolunteerService {
     void register(VolunteerRegistrationDto dto, MultipartFile resume, MultipartFile photo);
     List<Volunteer> getVolunteerByStatus(VolunteerStatus status);
+    void updateStatus(Long id, VolunteerStatus status);
 }

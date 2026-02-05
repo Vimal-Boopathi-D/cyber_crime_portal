@@ -53,6 +53,10 @@ public class ComplaintServiceImpl implements ComplaintService {
         complaint.setPoliceStation(complaintRequestDTO.getPoliceStation());
         complaint.setStatus(IncidentStatus.SUBMITTED);
         complaint.setAdditionalInfo(complaintRequestDTO.getAdditionalInfo());
+        complaint.setSuspectName(complaintRequestDTO.getSuspectName());
+        complaint.setSuspectContact(complaintRequestDTO.getSuspectContact());
+        complaint.setSuspectIdentificationDetails(complaintRequestDTO.getSuspectIdentificationDetails());
+        complaint.setSuspectAdditionalInfo(complaintRequestDTO.getSuspectAdditionalInfo());
         Complaint saved = complaintRepository.save(complaint);
         saveTimeline(saved, IncidentStatus.SUBMITTED, "Initial Submission", "Citizen");
         notificationService.sendStatusUpdate(saved.getId());
@@ -84,6 +88,10 @@ public class ComplaintServiceImpl implements ComplaintService {
                 .firNumber(complaint.getFir() != null ? complaint.getFir().getFirNo() : null)
                 .createdAt(complaint.getCreatedAt())
                 .updatedAt(complaint.getUpdatedAt())
+                .suspectName(complaint.getSuspectName())
+                .suspectContact(complaint.getSuspectContact())
+                .suspectIdentificationDetails(complaint.getSuspectIdentificationDetails())
+                .suspectAdditionalInfo(complaint.getSuspectAdditionalInfo())
                 .build();
     }
 
@@ -163,6 +171,10 @@ public class ComplaintServiceImpl implements ComplaintService {
                             .firNumber(c.getFir() != null ? c.getFir().getFirNo() : null)
                             .createdAt(c.getCreatedAt())
                             .updatedAt(c.getUpdatedAt())
+                            .suspectName(c.getSuspectName())
+                            .suspectContact(c.getSuspectContact())
+                            .suspectIdentificationDetails(c.getSuspectIdentificationDetails())
+                            .suspectAdditionalInfo(c.getSuspectAdditionalInfo())
                             .build())
                     .toList();
         }else {
@@ -188,6 +200,10 @@ public class ComplaintServiceImpl implements ComplaintService {
                             .citizenMobile(c.getCitizen() != null ? c.getCitizen().getMobileNo() : null)
                             .firId(c.getFir() != null ? c.getFir().getId() : null)
                             .firNumber(c.getFir() != null ? c.getFir().getFirNo() : null)
+                            .suspectName(c.getSuspectName())
+                            .suspectContact(c.getSuspectContact())
+                            .suspectIdentificationDetails(c.getSuspectIdentificationDetails())
+                            .suspectAdditionalInfo(c.getSuspectAdditionalInfo())
                             .createdAt(c.getCreatedAt())
                             .updatedAt(c.getUpdatedAt())
                             .build())

@@ -83,4 +83,11 @@ public class VolunteerServiceImpl implements VolunteerService {
     public List<Volunteer> getVolunteerByStatus(VolunteerStatus status) {
         return volunteerRepository.findByStatus(status);
     }
+
+    @Override
+    public void updateStatus(Long id, VolunteerStatus status) {
+         Volunteer volunteer= volunteerRepository.findById(id).orElseThrow(()->new RuntimeException("No Volunteer Found"));
+         volunteer.setStatus(status);
+         volunteerRepository.save(volunteer);
+    }
 }
