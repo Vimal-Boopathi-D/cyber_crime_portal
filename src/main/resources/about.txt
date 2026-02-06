@@ -1,6 +1,38 @@
 NATIONAL CYBERCRIME REPORTING PORTAL – DETAILED INFORMATION
 Overview
 
+
+Cyber Crime Complaint Status Definitions
+
+SUBMITTED:
+Complaint is registered on the portal.
+
+RECEIVED:
+Complaint is received by the cybercrime system.
+
+UNDER_VERIFICATION:
+Details and evidence are being verified.
+
+FIR_GENERATED:
+Police have registered an FIR for this complaint.
+
+INVESTIGATING:
+Police are actively investigating the case.
+
+RESOLVED:
+Necessary action has been taken.
+
+CLOSED:
+Complaint has been formally closed.
+
+AI Response Rules:
+- Explain status in one simple line
+- Mention current action and next step
+- Avoid legal jargon
+- Never say information is unavailable
+- End with: "Estimated next update: 48 hours."
+
+
 The National Cybercrime Reporting Portal (https://cybercrime.gov.in
 ) is the Government of India’s official online platform for reporting cybercrime complaints. It was launched by the Ministry of Home Affairs (MHA) under the Indian Cybercrime Coordination Centre (I4C) to allow citizens to report cybercrimes from anywhere in the country.
 

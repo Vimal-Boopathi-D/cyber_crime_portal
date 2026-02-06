@@ -67,37 +67,46 @@ public class ComplaintServiceImpl implements ComplaintService {
 
     @Override
     public ComplaintDto getComplaintByAckNo(String ack) {
-        Complaint complaint= complaintRepository.findByAcknowledgementNo(ack).orElseThrow(() -> new PortalException("Not Found", HttpStatus.NOT_FOUND));
-        PoliceOfficer policeOfficer = complaint.getFir().getGeneratedBy();
+
+        Complaint complaint = complaintRepository
+                .findByAcknowledgementNo(ack)
+                .orElseThrow(() -> new PortalException("Not Found", HttpStatus.NOT_FOUND));
+
+        FIR fir = complaint.getFir();
+        PoliceOfficer policeOfficer =
+                (fir != null) ? fir.getGeneratedBy() : null;
+
         return ComplaintDto.builder()
                 .id(complaint.getId())
                 .acknowledgementNo(complaint.getAcknowledgementNo())
                 .category(complaint.getCategory())
-
                 .incidentDate(complaint.getIncidentDate())
                 .additionalInfo(complaint.getAdditionalInfo())
-
                 .incidentLocation(complaint.getIncidentLocation())
                 .state(complaint.getState())
                 .district(complaint.getDistrict())
                 .policeStation(complaint.getPoliceStation())
-
                 .status(complaint.getStatus())
                 .citizenId(complaint.getCitizen() != null ? complaint.getCitizen().getId() : null)
                 .citizenName(complaint.getCitizen() != null ? complaint.getCitizen().getName() : null)
                 .citizenMobile(complaint.getCitizen() != null ? complaint.getCitizen().getMobileNo() : null)
-                .firId(complaint.getFir() != null ? complaint.getFir().getId() : null)
-                .firNumber(complaint.getFir() != null ? complaint.getFir().getFirNo() : null)
+                .firId(fir != null ? fir.getId() : null)
+                .firNumber(fir != null ? fir.getFirNo() : null)
+                .officerName(policeOfficer != null ? policeOfficer.getName() : null)
+                .officerState(
+                        policeOfficer != null && policeOfficer.getState() != null
+                                ? policeOfficer.getState().toString()
+                                : null
+                )
                 .createdAt(complaint.getCreatedAt())
                 .updatedAt(complaint.getUpdatedAt())
                 .suspectName(complaint.getSuspectName())
                 .suspectContact(complaint.getSuspectContact())
                 .suspectIdentificationDetails(complaint.getSuspectIdentificationDetails())
                 .suspectAdditionalInfo(complaint.getSuspectAdditionalInfo())
-                .officerName(policeOfficer.getName())
-                .officerState(policeOfficer.getState().toString())
                 .build();
     }
+
 
     @Override
     public List<ComplaintHistoryDto> getCitizenComplaints(Long citizenId) {
