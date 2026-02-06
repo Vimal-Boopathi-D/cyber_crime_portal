@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import com.cyber.portal.volunteerManagement.service.VolunteerService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -20,6 +21,7 @@ import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.List;
 
@@ -66,16 +68,17 @@ public class VolunteerController {
     }
 
 
-    @GetMapping("/approved/csv")
-    public ResponseEntity<byte[]> downloadApprovedVolunteersCsv() {
+    @GetMapping("/approved/excel")
+    public ResponseEntity<InputStreamResource> downloadExcel() throws IOException {
 
-        String csvData = volunteerCsvService.generateApprovedVolunteersCsv();
+        ByteArrayInputStream stream =
+                volunteerCsvService.exportApprovedVolunteersExcel();
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION,
-                        "attachment; filename=approved_volunteers.csv")
-                .contentType(MediaType.TEXT_PLAIN)
-                .body(csvData.getBytes());
+                        "attachment; filename=approved_volunteers.xlsx")
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .body(new InputStreamResource(stream));
     }
 
 
@@ -126,4 +129,6 @@ public class VolunteerController {
 //                        "attachment; filename=\"" + resource.getFilename() + "\"")
 //                .body(resource);
 //    }
+
+
 }
