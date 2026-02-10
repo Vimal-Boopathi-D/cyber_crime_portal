@@ -3,7 +3,6 @@ package com.cyber.portal.complaintAndFirManagement.service.impl;
 import com.cyber.portal.citizenManagement.dto.ComplaintHistoryDto;
 import com.cyber.portal.citizenManagement.entity.Citizen;
 import com.cyber.portal.citizenManagement.entity.PoliceOfficer;
-import com.cyber.portal.citizenManagement.entity.PoliceStation;
 import com.cyber.portal.citizenManagement.repository.CitizenRepository;
 import com.cyber.portal.citizenManagement.repository.PoliceOfficerRepository;
 import com.cyber.portal.complaintAndFirManagement.dto.*;
@@ -14,18 +13,20 @@ import com.cyber.portal.complaintAndFirManagement.repository.ComplaintRepository
 import com.cyber.portal.complaintAndFirManagement.repository.ComplaintTimelineRepository;
 import com.cyber.portal.complaintAndFirManagement.repository.FIRRepository;
 import com.cyber.portal.complaintAndFirManagement.service.ComplaintService;
+import com.cyber.portal.sharedResources.config.FakeKeywordConfig;
+import com.cyber.portal.sharedResources.config.KeywordWeightConfig;
+import com.cyber.portal.sharedResources.enums.ComplaintCategory;
 import com.cyber.portal.sharedResources.enums.IncidentStatus;
 import com.cyber.portal.sharedResources.exception.PortalException;
 import com.cyber.portal.sharedResources.service.NotificationService;
+import com.cyber.portal.sharedResources.util.TextUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -35,7 +36,8 @@ public class ComplaintServiceImpl implements ComplaintService {
     private final NotificationService notificationService;
     private final CitizenRepository citizenRepository;
     private final FIRRepository firRepository;
-    private final PoliceOfficerRepository policeOfficerRepository;
+    private final FakeKeywordConfig fakeKeywordConfig;
+    private final KeywordWeightConfig keywordWeightConfig;
 
     @Override
     @Transactional
@@ -59,10 +61,43 @@ public class ComplaintServiceImpl implements ComplaintService {
         complaint.setSuspectContact(complaintRequestDTO.getSuspectContact());
         complaint.setSuspectIdentificationDetails(complaintRequestDTO.getSuspectIdentificationDetails());
         complaint.setSuspectAdditionalInfo(complaintRequestDTO.getSuspectAdditionalInfo());
+        analyze(complaintRequestDTO.getAdditionalInfo(), complaintRequestDTO.getCategory(), complaint);
         Complaint saved = complaintRepository.save(complaint);
         saveTimeline(saved, IncidentStatus.SUBMITTED, "Initial Submission", "Citizen");
         notificationService.sendStatusUpdate(saved.getId());
         return ackNo;
+    }
+
+    public void analyze(String text, ComplaintCategory category, Complaint complaint) {
+
+        List<String> tokens = TextUtil.tokenize(text);
+        if (tokens.isEmpty()) {
+            complaint.setPercentage(0);
+            complaint.setLabel("GENUINE");
+            return;
+        }
+        Set<String> suspiciousKeywords = fakeKeywordConfig.getKeywords(category);
+
+        double fakeScore = 0;
+        int totalWords = tokens.size();
+
+        for (String word : suspiciousKeywords) {
+            long count = tokens.stream()
+                    .filter(token -> token.equals(word))
+                    .count();
+
+            if (count > 0) {
+                double tf = (double) count / totalWords;
+                double weight = keywordWeightConfig.getWeight(category, word);
+                fakeScore += tf * weight;
+            }
+        }
+
+        // 🔹 Normalize score → percentage
+        double percentage = Math.min(fakeScore * 100, 100);
+
+        complaint.setPercentage(percentage);
+        complaint.setLabel(percentage >= 60 ? "FAKE" : "GENUINE");
     }
 
     @Override
