@@ -97,7 +97,7 @@ public class ComplaintServiceImpl implements ComplaintService {
         double percentage = Math.min(fakeScore * 100, 100);
 
         complaint.setPercentage(percentage);
-        complaint.setLabel(percentage >= 60 ? "FAKE" : "GENUINE");
+        complaint.setLabel(percentage >= 60 ? "POSSIBLY FAKE" : "LIKELY GENUINE");
     }
 
     @Override
