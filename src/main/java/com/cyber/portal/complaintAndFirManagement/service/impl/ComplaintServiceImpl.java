@@ -102,14 +102,15 @@ public class ComplaintServiceImpl implements ComplaintService {
 
     @Override
     public ComplaintDto getComplaintByAckNo(String ack) {
-
+        
         Complaint complaint = complaintRepository
                 .findByAcknowledgementNo(ack)
                 .orElseThrow(() -> new PortalException("Not Found", HttpStatus.NOT_FOUND));
 
         FIR fir = complaint.getFir();
-        PoliceOfficer policeOfficer =
-                (fir != null) ? fir.getGeneratedBy() : null;
+        PoliceOfficer policeOfficer = Optional.ofNullable(complaint.getFir())
+                .map(FIR::getGeneratedBy)
+                .orElse(null);
 
         return ComplaintDto.builder()
                 .id(complaint.getId())
