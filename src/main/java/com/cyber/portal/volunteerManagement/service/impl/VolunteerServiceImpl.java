@@ -86,7 +86,7 @@ public class VolunteerServiceImpl implements VolunteerService {
         }
     }
 
-    public List<Volunteer> getVolunteerByStatus(VolunteerStatus status) {
+    public List<Volunteer>  getVolunteerByStatus(VolunteerStatus status) {
         return volunteerRepository.findByStatus(status);
     }
 
