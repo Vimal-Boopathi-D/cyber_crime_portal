@@ -42,8 +42,8 @@ public class Complaint {
     private State state;
     private String district;
     private String policeStation;
-    private String label;
-    private double percentage;
+//    private String label;
+//    private double percentage;
 
     @Enumerated(EnumType.STRING)
     private IncidentStatus status;

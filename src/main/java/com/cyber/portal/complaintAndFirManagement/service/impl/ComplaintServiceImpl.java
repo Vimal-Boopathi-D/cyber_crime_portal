@@ -71,11 +71,11 @@ public class ComplaintServiceImpl implements ComplaintService {
     public void analyze(String text, ComplaintCategory category, Complaint complaint) {
 
         List<String> tokens = TextUtil.tokenize(text);
-        if (tokens.isEmpty()) {
-            complaint.setPercentage(0);
-            complaint.setLabel("GENUINE");
-            return;
-        }
+//        if (tokens.isEmpty()) {
+//            complaint.setPercentage(0);
+//            complaint.setLabel("GENUINE");
+//            return;
+//        }
         Set<String> suspiciousKeywords = fakeKeywordConfig.getKeywords(category);
 
         double fakeScore = 0;
@@ -96,8 +96,8 @@ public class ComplaintServiceImpl implements ComplaintService {
         // 🔹 Normalize score → percentage
         double percentage = Math.min(fakeScore * 100, 100);
 
-        complaint.setPercentage(percentage);
-        complaint.setLabel(percentage >= 60 ? "POSSIBLY FAKE" : "LIKELY GENUINE");
+//        complaint.setPercentage(percentage);
+//        complaint.setLabel(percentage >= 60 ? "POSSIBLY FAKE" : "LIKELY GENUINE");
     }
 
     @Override

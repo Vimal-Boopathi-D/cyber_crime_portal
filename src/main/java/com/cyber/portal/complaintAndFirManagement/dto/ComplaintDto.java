@@ -38,8 +38,8 @@ public class ComplaintDto {
     private String firNumber;
     private String officerName;
     private String officerState;
-    private String label;
-    private double percentage;
+//    private String label;
+//    private double percentage;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

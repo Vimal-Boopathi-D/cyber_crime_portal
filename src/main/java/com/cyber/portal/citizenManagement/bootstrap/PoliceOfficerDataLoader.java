@@ -1,4 +1,4 @@
-package com.cyber.portal.bootstrap;
+package com.cyber.portal.citizenManagement.bootstrap;
 
 import com.cyber.portal.citizenManagement.entity.Admin;
 import com.cyber.portal.citizenManagement.entity.PoliceOfficer;
