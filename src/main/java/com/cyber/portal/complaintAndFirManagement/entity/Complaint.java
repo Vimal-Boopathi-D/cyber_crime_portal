@@ -31,9 +31,6 @@ public class Complaint {
     private LocalDateTime incidentDate;
     
     @Column(columnDefinition = "TEXT")
-    private String reasonForDelay;
-    
-    @Column(columnDefinition = "TEXT")
     private String additionalInfo;
 
     private String incidentLocation;
@@ -43,7 +40,7 @@ public class Complaint {
     private String district;
     private String policeStation;
     private String label;
-    private double percentage;
+    private Double percentage;
 
     @Enumerated(EnumType.STRING)
     private IncidentStatus status;
