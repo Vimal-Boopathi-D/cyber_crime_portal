@@ -57,16 +57,17 @@ public class ComplaintServiceImpl implements ComplaintService {
         complaint.setCategory(complaintRequestDTO.getCategory());
         complaint.setIncidentDate(complaintRequestDTO.getIncidentDate());
         complaint.setIncidentLocation(complaintRequestDTO.getIncidentLocation());
+       // complaint.setReasonForDelay(complaintRequestDTO.getReasonForDelay());
         complaint.setState(complaintRequestDTO.getState());
         complaint.setDistrict(complaintRequestDTO.getDistrict());
         complaint.setPoliceStation(complaintRequestDTO.getPoliceStation());
         complaint.setStatus(IncidentStatus.SUBMITTED);
-        complaint.setAdditionalInfo(complaintRequestDTO.getAdditionalInfo());
+        complaint.setIncidentDescription(complaintRequestDTO.getIncidentDescription());
         complaint.setSuspectName(complaintRequestDTO.getSuspectName());
         complaint.setSuspectContact(complaintRequestDTO.getSuspectContact());
         complaint.setSuspectIdentificationDetails(complaintRequestDTO.getSuspectIdentificationDetails());
         complaint.setSuspectAdditionalInfo(complaintRequestDTO.getSuspectAdditionalInfo());
-        analyze(complaintRequestDTO.getAdditionalInfo(), complaintRequestDTO.getCategory(), complaint);
+        analyze(complaintRequestDTO.getIncidentDescription(), complaintRequestDTO.getCategory(), complaint);
         Complaint saved = complaintRepository.save(complaint);
         saveTimeline(saved, IncidentStatus.SUBMITTED, "Initial Submission", "Citizen");
         notificationService.sendStatusUpdate(saved.getId());
@@ -107,7 +108,7 @@ public class ComplaintServiceImpl implements ComplaintService {
 
     @Override
     public ComplaintDto getComplaintByAckNo(String ack) {
-
+        
         Complaint complaint = complaintRepository
                 .findByAcknowledgementNo(ack)
                 .orElseThrow(() -> new PortalException("Not Found", HttpStatus.NOT_FOUND));
@@ -121,15 +122,12 @@ public class ComplaintServiceImpl implements ComplaintService {
                 .id(complaint.getId())
                 .acknowledgementNo(complaint.getAcknowledgementNo())
                 .category(complaint.getCategory())
-
                 .incidentDate(complaint.getIncidentDate())
-                .additionalInfo(complaint.getAdditionalInfo())
-
+                .incidentDescription(complaint.getIncidentDescription())
                 .incidentLocation(complaint.getIncidentLocation())
                 .state(complaint.getState())
                 .district(complaint.getDistrict())
                 .policeStation(complaint.getPoliceStation())
-
                 .status(complaint.getStatus())
                 .citizenId(complaint.getCitizen() != null ? complaint.getCitizen().getId() : null)
                 .citizenName(complaint.getCitizen() != null ? complaint.getCitizen().getName() : null)
@@ -215,7 +213,7 @@ public class ComplaintServiceImpl implements ComplaintService {
                             .category(c.getCategory())
 
                             .incidentDate(c.getIncidentDate())
-                            .additionalInfo(c.getAdditionalInfo())
+                            .incidentDescription(c.getIncidentDescription())
 
                             .incidentLocation(c.getIncidentLocation())
                             .state(c.getState())
@@ -223,6 +221,7 @@ public class ComplaintServiceImpl implements ComplaintService {
                             .policeStation(c.getPoliceStation())
 
                             .status(c.getStatus())
+                            .label(c.getLabel())
                             .citizenId(c.getCitizen() != null ? c.getCitizen().getId() : null)
                             .citizenName(c.getCitizen() != null ? c.getCitizen().getName() : null)
                             .citizenMobile(c.getCitizen() != null ? c.getCitizen().getMobileNo() : null)
@@ -245,7 +244,7 @@ public class ComplaintServiceImpl implements ComplaintService {
                             .category(c.getCategory())
 
                             .incidentDate(c.getIncidentDate())
-                            .additionalInfo(c.getAdditionalInfo())
+                            .incidentDescription(c.getIncidentDescription())
 
                             .incidentLocation(c.getIncidentLocation())
                             .state(c.getState())

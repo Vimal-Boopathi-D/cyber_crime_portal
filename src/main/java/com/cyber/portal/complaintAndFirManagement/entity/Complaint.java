@@ -30,8 +30,11 @@ public class Complaint {
 
     private LocalDateTime incidentDate;
     
+//    @Column(columnDefinition = "TEXT")
+//    private String reasonForDelay;
+
     @Column(columnDefinition = "TEXT")
-    private String additionalInfo;
+    private String incidentDescription;
 
     private String incidentLocation;
 
