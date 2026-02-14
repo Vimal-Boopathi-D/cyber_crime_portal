@@ -6,11 +6,17 @@ import com.cyber.portal.complaintAndFirManagement.service.ComplaintService;
 import com.cyber.portal.complaintAndFirManagement.service.DocumentService;
 import com.cyber.portal.sharedResources.dto.ApiResponse;
 import com.cyber.portal.sharedResources.enums.IncidentStatus;
+import jakarta.servlet.http.HttpServletRequest;
+import jdk.jfr.ContentType;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/police")
@@ -28,12 +34,35 @@ public class PoliceController {
         return ResponseEntity.ok(ApiResponse.of(HttpStatus.OK, "Status updated successfully", updated));
     }
 
-    @PostMapping("/complaints/{id}/upload-fir")
-    public ResponseEntity<ApiResponse<FIR>> uploadFIR(
-            @PathVariable Long id,
-            @RequestParam Long officerId) {
-       documentService.uploadFIR(id, officerId);
+    @PostMapping(
+            value = "/complaints/{id}/{officerId}/upload-fir",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE
+    )    public ResponseEntity<ApiResponse<FIR>> uploadFIR(
+            @PathVariable("id") Long id,
+            @PathVariable("officerId") Long officerId,
+            @RequestParam("firDocument") MultipartFile firDocument) {
+       documentService.uploadFIR(id, officerId, firDocument);
         return ResponseEntity.ok(ApiResponse.of(HttpStatus.OK, "FIR uploaded successfully",null));
+    }
+
+    @GetMapping("/complaints/{id}/download-fir")
+    public ResponseEntity<Resource> downloadFIR(@PathVariable Long id, HttpServletRequest request) {
+
+        Resource resource =complaintService.downloadFir(id);
+        String contentType;
+        try {
+            contentType=request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
+        }catch (Exception e){
+            contentType=null;
+        }
+        if (contentType==null){
+            contentType= MediaType.APPLICATION_OCTET_STREAM_VALUE;
+        }
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(contentType))
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment; fileName= \"" + resource.getFilename()+ "\"")
+                .body(resource);
     }
 
     @Data

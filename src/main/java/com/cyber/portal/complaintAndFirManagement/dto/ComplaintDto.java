@@ -18,7 +18,7 @@ public class ComplaintDto {
     private ComplaintCategory category;
 
     private LocalDateTime incidentDate;
-    private String additionalInfo;
+    private String incidentDescription;
 
     private String incidentLocation;
     private State state;
@@ -39,7 +39,7 @@ public class ComplaintDto {
     private String officerName;
     private String officerState;
     private String label;
-    private double percentage;
+    private Double percentage;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

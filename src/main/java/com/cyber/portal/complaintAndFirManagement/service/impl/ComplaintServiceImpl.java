@@ -3,6 +3,7 @@ package com.cyber.portal.complaintAndFirManagement.service.impl;
 import com.cyber.portal.citizenManagement.dto.ComplaintHistoryDto;
 import com.cyber.portal.citizenManagement.entity.Citizen;
 import com.cyber.portal.citizenManagement.entity.PoliceOfficer;
+import com.cyber.portal.citizenManagement.entity.PoliceStation;
 import com.cyber.portal.citizenManagement.repository.CitizenRepository;
 import com.cyber.portal.citizenManagement.repository.PoliceOfficerRepository;
 import com.cyber.portal.complaintAndFirManagement.dto.*;
@@ -21,10 +22,15 @@ import com.cyber.portal.sharedResources.exception.PortalException;
 import com.cyber.portal.sharedResources.service.NotificationService;
 import com.cyber.portal.sharedResources.util.TextUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -51,17 +57,17 @@ public class ComplaintServiceImpl implements ComplaintService {
         complaint.setCategory(complaintRequestDTO.getCategory());
         complaint.setIncidentDate(complaintRequestDTO.getIncidentDate());
         complaint.setIncidentLocation(complaintRequestDTO.getIncidentLocation());
-        complaint.setReasonForDelay(complaintRequestDTO.getReasonForDelay());
+       // complaint.setReasonForDelay(complaintRequestDTO.getReasonForDelay());
         complaint.setState(complaintRequestDTO.getState());
         complaint.setDistrict(complaintRequestDTO.getDistrict());
         complaint.setPoliceStation(complaintRequestDTO.getPoliceStation());
         complaint.setStatus(IncidentStatus.SUBMITTED);
-        complaint.setAdditionalInfo(complaintRequestDTO.getAdditionalInfo());
+        complaint.setIncidentDescription(complaintRequestDTO.getIncidentDescription());
         complaint.setSuspectName(complaintRequestDTO.getSuspectName());
         complaint.setSuspectContact(complaintRequestDTO.getSuspectContact());
         complaint.setSuspectIdentificationDetails(complaintRequestDTO.getSuspectIdentificationDetails());
         complaint.setSuspectAdditionalInfo(complaintRequestDTO.getSuspectAdditionalInfo());
-        analyze(complaintRequestDTO.getAdditionalInfo(), complaintRequestDTO.getCategory(), complaint);
+        analyze(complaintRequestDTO.getIncidentDescription(), complaintRequestDTO.getCategory(), complaint);
         Complaint saved = complaintRepository.save(complaint);
         saveTimeline(saved, IncidentStatus.SUBMITTED, "Initial Submission", "Citizen");
         notificationService.sendStatusUpdate(saved.getId());
@@ -72,7 +78,7 @@ public class ComplaintServiceImpl implements ComplaintService {
 
         List<String> tokens = TextUtil.tokenize(text);
         if (tokens.isEmpty()) {
-            complaint.setPercentage(0);
+            complaint.setPercentage(Double.valueOf(0));
             complaint.setLabel("GENUINE");
             return;
         }
@@ -117,7 +123,7 @@ public class ComplaintServiceImpl implements ComplaintService {
                 .acknowledgementNo(complaint.getAcknowledgementNo())
                 .category(complaint.getCategory())
                 .incidentDate(complaint.getIncidentDate())
-                .additionalInfo(complaint.getAdditionalInfo())
+                .incidentDescription(complaint.getIncidentDescription())
                 .incidentLocation(complaint.getIncidentLocation())
                 .state(complaint.getState())
                 .district(complaint.getDistrict())
@@ -207,7 +213,7 @@ public class ComplaintServiceImpl implements ComplaintService {
                             .category(c.getCategory())
 
                             .incidentDate(c.getIncidentDate())
-                            .additionalInfo(c.getAdditionalInfo())
+                            .incidentDescription(c.getIncidentDescription())
 
                             .incidentLocation(c.getIncidentLocation())
                             .state(c.getState())
@@ -215,6 +221,7 @@ public class ComplaintServiceImpl implements ComplaintService {
                             .policeStation(c.getPoliceStation())
 
                             .status(c.getStatus())
+                            .label(c.getLabel())
                             .citizenId(c.getCitizen() != null ? c.getCitizen().getId() : null)
                             .citizenName(c.getCitizen() != null ? c.getCitizen().getName() : null)
                             .citizenMobile(c.getCitizen() != null ? c.getCitizen().getMobileNo() : null)
@@ -237,7 +244,7 @@ public class ComplaintServiceImpl implements ComplaintService {
                             .category(c.getCategory())
 
                             .incidentDate(c.getIncidentDate())
-                            .additionalInfo(c.getAdditionalInfo())
+                            .incidentDescription(c.getIncidentDescription())
 
                             .incidentLocation(c.getIncidentLocation())
                             .state(c.getState())
@@ -296,6 +303,32 @@ public class ComplaintServiceImpl implements ComplaintService {
                         ((Number) r[2]).longValue()
                 ))
                 .toList();
+    }
+
+    @Override
+    public Resource downloadFir(Long id) {
+        Complaint complaint = complaintRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Complaint not found"));
+        FIR fir = firRepository.findByComplaintId(complaint.getId())
+                .orElseThrow(() -> new RuntimeException("FIR not found for this complaint"));
+
+        Path path = Paths.get(fir.getFirPath()).normalize();
+        try {
+            if (Files.exists(path)){
+                    if (!Files.isReadable(path)) {
+                        throw new RuntimeException("File is not readable");
+                    }
+
+            Resource resource = new UrlResource(path.toUri());
+            if(resource.isReadable()){
+                return resource;
+            }
+            }
+        }catch (Exception e) {
+            throw new RuntimeException("File not found", e);
+        }
+        throw new RuntimeException("File not found");
+
     }
 
 }

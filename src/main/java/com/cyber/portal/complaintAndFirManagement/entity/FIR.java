@@ -29,6 +29,9 @@ public class FIR {
     @JoinColumn(name = "generated_by", nullable = false)
     private PoliceOfficer generatedBy;
 
+    @Column(name = "fir_path")
+    private String firPath;
+
     private LocalDateTime generatedAt;
 
     @PrePersist

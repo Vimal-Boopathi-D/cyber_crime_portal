@@ -5,6 +5,8 @@ import com.cyber.portal.complaintAndFirManagement.dto.*;
 import com.cyber.portal.complaintAndFirManagement.entity.Complaint;
 import com.cyber.portal.complaintAndFirManagement.entity.ComplaintTimeline;
 import com.cyber.portal.sharedResources.enums.IncidentStatus;
+import org.springframework.core.io.Resource;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -18,4 +20,5 @@ public interface ComplaintService {
     List<ComplaintDto> getComplaints(Long citizenId);
     AssignedOfficerDTO getAssignedOfficer(Long complaintId);
     List<ComplaintMonthlyCountDto> getMonthlyComplaintStats();
+    Resource downloadFir(Long id);
 }

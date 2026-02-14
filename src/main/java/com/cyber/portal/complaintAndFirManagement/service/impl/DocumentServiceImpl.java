@@ -29,6 +29,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.awt.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.EnumMap;
@@ -42,6 +46,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
@@ -54,6 +59,8 @@ public class DocumentServiceImpl implements DocumentService {
     private final FIRRepository firRepository;
     private final CitizenRepository citizenRepository;
     private final PoliceOfficerRepository policeOfficerRepository;
+
+    private static final String FIR_UPLOAD_DIR = "fir/uploads/";
 
     @Override
     public byte[] generateComplaintReport(Long complaintId) {
@@ -119,7 +126,7 @@ public class DocumentServiceImpl implements DocumentService {
             addSectionTitle(document, "Complaint Description");
 
             Paragraph desc = new Paragraph(
-                    complaint.getAdditionalInfo(),
+                    complaint.getIncidentDescription(),
                     new Font(Font.HELVETICA, 11)
             );
             desc.setAlignment(Element.ALIGN_JUSTIFIED);
@@ -176,7 +183,6 @@ public class DocumentServiceImpl implements DocumentService {
 
     @Override
     public byte[] getFIRCopy(Long firId) {
-        // Mock FIR retrieval
         FIR fir = firRepository.getFir(firId)
                 .orElseThrow(() -> new RuntimeException("FIR not found"));
 
@@ -189,7 +195,6 @@ public class DocumentServiceImpl implements DocumentService {
             PdfWriter.getInstance(document, out);
             document.open();
 
-            // ===== Title =====
             Font titleFont = new Font(Font.HELVETICA, 18, Font.BOLD);
             Paragraph title = new Paragraph("FIRST INFORMATION REPORT (FIR)", titleFont);
             title.setAlignment(Element.ALIGN_CENTER);
@@ -197,7 +202,6 @@ public class DocumentServiceImpl implements DocumentService {
 
             document.add(new Paragraph("\n"));
 
-            // ===== FIR Header =====
             PdfPTable headerTable = new PdfPTable(2);
             headerTable.setWidthPercentage(100);
 
@@ -209,7 +213,6 @@ public class DocumentServiceImpl implements DocumentService {
             document.add(headerTable);
             document.add(new Paragraph("\n"));
 
-            // ===== Complainant Details =====
             addSectionTitle(document, "Complainant Details");
 
             PdfPTable complainantTable = new PdfPTable(2);
@@ -223,7 +226,6 @@ public class DocumentServiceImpl implements DocumentService {
             document.add(complainantTable);
             document.add(new Paragraph("\n"));
 
-            // ===== Incident Details =====
             addSectionTitle(document, "Incident Details");
 
             PdfPTable incidentTable = new PdfPTable(2);
@@ -237,11 +239,10 @@ public class DocumentServiceImpl implements DocumentService {
             document.add(incidentTable);
             document.add(new Paragraph("\n"));
 
-            // ===== Complaint Description =====
             addSectionTitle(document, "Statement of the Complainant");
 
             Paragraph description = new Paragraph(
-                    complaint.getAdditionalInfo(),
+                    complaint.getIncidentDescription(),
                     new Font(Font.HELVETICA, 11)
             );
             description.setAlignment(Element.ALIGN_JUSTIFIED);
@@ -249,7 +250,6 @@ public class DocumentServiceImpl implements DocumentService {
 
             document.add(new Paragraph("\n\n"));
 
-            // ===== Signatures =====
             PdfPTable signTable = new PdfPTable(2);
             signTable.setWidthPercentage(100);
 
@@ -268,7 +268,6 @@ public class DocumentServiceImpl implements DocumentService {
 
             document.add(new Paragraph("\n"));
 
-            // ===== Footer =====
             Paragraph footer = new Paragraph(
                     "This FIR is generated electronically as per Section 154 CrPC.",
                     new Font(Font.HELVETICA, 9, Font.ITALIC)
@@ -313,36 +312,61 @@ public class DocumentServiceImpl implements DocumentService {
 
     @Override
     @Transactional
-    public void uploadFIR(Long complaintId, Long officerId) {
+    public void uploadFIR(Long complaintId, Long officerId, MultipartFile firDocument) {
+
         Complaint complaint = complaintRepository.findById(complaintId)
                 .orElseThrow(() -> new PortalException("Complaint not found", HttpStatus.NOT_FOUND));
 
         PoliceOfficer policeOfficer = policeOfficerRepository.findById(officerId)
-                .orElseThrow(() -> new PortalException("Complaint not found", HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new PortalException("Officer not found", HttpStatus.NOT_FOUND));
 
-        long sequence = STATE_SEQUENCE_MAP
-                .get(policeOfficer.getState())
-                .incrementAndGet();
+        FIR fir = firRepository.findByComplaintId(complaintId)
+                .orElseGet(() -> {
+                    long sequence = STATE_SEQUENCE_MAP
+                            .get(policeOfficer.getState())
+                            .incrementAndGet();
 
-        int year = LocalDate.now().getYear();
-        String firNo = String.format(
-                "FIR/%s/%d/%06d",
-                policeOfficer.getState(),
-                year,
-                sequence
-        );
+                    int year = LocalDate.now().getYear();
+                    String firNo = String.format(
+                            "FIR/%s/%d/%06d",
+                            policeOfficer.getState(),
+                            year,
+                            sequence
+                    );
 
-        FIR fir = FIR.builder()
-                .firNo(firNo)
-                .complaint(complaint)
-                .generatedBy(policeOfficer)
-                .build();
-        
+                    return FIR.builder()
+                            .firNo(firNo)
+                            .complaint(complaint)
+                            .generatedBy(policeOfficer)
+                            .build();
+                });
+        fir.setGeneratedBy(policeOfficer);
+
+        if (firDocument != null && !firDocument.isEmpty()) {
+            try {
+                Path uploadDir = Paths.get(FIR_UPLOAD_DIR).toAbsolutePath().normalize();
+                Files.createDirectories(uploadDir);
+
+                String safeFirNo = fir.getFirNo().replace("/", "_");
+                String filename = "FIR_" + complaintId + "_" + safeFirNo + ".pdf";
+
+                Path path = uploadDir.resolve(filename);
+
+                Files.copy(firDocument.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+
+                fir.setFirPath(path.toString());
+
+            } catch (Exception e) {
+                throw new RuntimeException("Failed to upload FIR document", e);
+            }
+        }
+
         complaint.setStatus(IncidentStatus.FIR_GENERATED);
+
         complaintRepository.save(complaint);
-        
-         firRepository.save(fir);
+        firRepository.save(fir);
     }
+
 
     @Override
     public byte[] generateCitizenComplaintExcel(Long citizenId) {
@@ -397,7 +421,7 @@ public class DocumentServiceImpl implements DocumentService {
                 row.createCell(0).setCellValue(c.getId());
                 row.createCell(1).setCellValue(c.getCreatedAt().format(formatter));
                 row.createCell(2).setCellValue(c.getCategory().name());
-                row.createCell(3).setCellValue(c.getAdditionalInfo());
+                row.createCell(3).setCellValue(c.getIncidentDescription());
                 row.createCell(4).setCellValue(c.getStatus().name());
                 row.createCell(5).setCellValue(c.getPoliceStation());
                 row.createCell(6).setCellValue(firGenerated);
