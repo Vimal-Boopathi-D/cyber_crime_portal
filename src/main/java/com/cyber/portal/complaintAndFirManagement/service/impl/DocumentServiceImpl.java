@@ -126,7 +126,7 @@ public class DocumentServiceImpl implements DocumentService {
             addSectionTitle(document, "Complaint Description");
 
             Paragraph desc = new Paragraph(
-                    complaint.getAdditionalInfo(),
+                    complaint.getIncidentDescription(),
                     new Font(Font.HELVETICA, 11)
             );
             desc.setAlignment(Element.ALIGN_JUSTIFIED);
@@ -242,7 +242,7 @@ public class DocumentServiceImpl implements DocumentService {
             addSectionTitle(document, "Statement of the Complainant");
 
             Paragraph description = new Paragraph(
-                    complaint.getAdditionalInfo(),
+                    complaint.getIncidentDescription(),
                     new Font(Font.HELVETICA, 11)
             );
             description.setAlignment(Element.ALIGN_JUSTIFIED);
@@ -421,7 +421,7 @@ public class DocumentServiceImpl implements DocumentService {
                 row.createCell(0).setCellValue(c.getId());
                 row.createCell(1).setCellValue(c.getCreatedAt().format(formatter));
                 row.createCell(2).setCellValue(c.getCategory().name());
-                row.createCell(3).setCellValue(c.getAdditionalInfo());
+                row.createCell(3).setCellValue(c.getIncidentDescription());
                 row.createCell(4).setCellValue(c.getStatus().name());
                 row.createCell(5).setCellValue(c.getPoliceStation());
                 row.createCell(6).setCellValue(firGenerated);

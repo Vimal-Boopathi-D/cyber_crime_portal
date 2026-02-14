@@ -21,7 +21,9 @@ public class ComplaintRequestDTO {
     @PastOrPresent(message = "Incident date cannot be in the future")
     private LocalDateTime incidentDate;
 
-    private String additionalInfo;
+//    private String reasonForDelay;
+
+    private String incidentDescription;
 
     private String incidentLocation;
 
