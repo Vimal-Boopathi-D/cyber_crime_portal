@@ -20,6 +20,7 @@ import com.cyber.portal.sharedResources.enums.ComplaintCategory;
 import com.cyber.portal.sharedResources.enums.IncidentStatus;
 import com.cyber.portal.sharedResources.exception.PortalException;
 import com.cyber.portal.sharedResources.service.NotificationService;
+import com.cyber.portal.sharedResources.service.impl.WekaPredictionService;
 import com.cyber.portal.sharedResources.util.TextUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
@@ -44,6 +45,7 @@ public class ComplaintServiceImpl implements ComplaintService {
     private final FIRRepository firRepository;
     private final FakeKeywordConfig fakeKeywordConfig;
     private final KeywordWeightConfig keywordWeightConfig;
+    private final WekaPredictionService wekaPredictionService;
 
     @Override
     @Transactional
@@ -57,7 +59,6 @@ public class ComplaintServiceImpl implements ComplaintService {
         complaint.setCategory(complaintRequestDTO.getCategory());
         complaint.setIncidentDate(complaintRequestDTO.getIncidentDate());
         complaint.setIncidentLocation(complaintRequestDTO.getIncidentLocation());
-       // complaint.setReasonForDelay(complaintRequestDTO.getReasonForDelay());
         complaint.setState(complaintRequestDTO.getState());
         complaint.setDistrict(complaintRequestDTO.getDistrict());
         complaint.setPoliceStation(complaintRequestDTO.getPoliceStation());
@@ -67,44 +68,15 @@ public class ComplaintServiceImpl implements ComplaintService {
         complaint.setSuspectContact(complaintRequestDTO.getSuspectContact());
         complaint.setSuspectIdentificationDetails(complaintRequestDTO.getSuspectIdentificationDetails());
         complaint.setSuspectAdditionalInfo(complaintRequestDTO.getSuspectAdditionalInfo());
-        analyze(complaintRequestDTO.getIncidentDescription(), complaintRequestDTO.getCategory(), complaint);
-        Complaint saved = complaintRepository.save(complaint);
+        complaint.setLabel(wekaPredictionService.predict(
+                complaintRequestDTO.getIncidentDescription()
+        ));        Complaint saved = complaintRepository.save(complaint);
         saveTimeline(saved, IncidentStatus.SUBMITTED, "Initial Submission", "Citizen");
         notificationService.sendStatusUpdate(saved.getId());
         return ackNo;
     }
 
-    public void analyze(String text, ComplaintCategory category, Complaint complaint) {
 
-        List<String> tokens = TextUtil.tokenize(text);
-        if (tokens.isEmpty()) {
-            complaint.setPercentage(Double.valueOf(0));
-            complaint.setLabel("GENUINE");
-            return;
-        }
-        Set<String> suspiciousKeywords = fakeKeywordConfig.getKeywords(category);
-
-        double fakeScore = 0;
-        int totalWords = tokens.size();
-
-        for (String word : suspiciousKeywords) {
-            long count = tokens.stream()
-                    .filter(token -> token.equals(word))
-                    .count();
-
-            if (count > 0) {
-                double tf = (double) count / totalWords;
-                double weight = keywordWeightConfig.getWeight(category, word);
-                fakeScore += tf * weight;
-            }
-        }
-
-        // 🔹 Normalize score → percentage
-        double percentage = Math.min(fakeScore * 100, 100);
-
-        complaint.setPercentage(percentage);
-        complaint.setLabel(percentage >= 60 ? "POSSIBLY FAKE" : "LIKELY GENUINE");
-    }
 
     @Override
     public ComplaintDto getComplaintByAckNo(String ack) {

@@ -1,0 +1,80 @@
+@relation complaints
+
+@attribute text string
+@attribute class {LIKELY_GENUINE,POSSIBLY_FAKE}
+
+@data
+"My phone was stolen near bus stand",LIKELY_GENUINE
+"Someone is controlling my brain using signals",POSSIBLY_FAKE
+"Bike stolen at 9 PM from parking area",LIKELY_GENUINE
+"I am being tracked by aliens",POSSIBLY_FAKE
+"My neighbour is reading my thoughts through television signals",POSSIBLY_FAKE
+"Government satellites are spying on me personally",POSSIBLY_FAKE
+"Aliens hacked my laptop remotely",POSSIBLY_FAKE
+"My boss implanted a chip in my body to monitor me",POSSIBLY_FAKE
+"Secret agents are controlling my house electricity",POSSIBLY_FAKE
+"My thoughts are being broadcast on radio channels",POSSIBLY_FAKE
+"Invisible people are stealing my energy at night",POSSIBLY_FAKE
+"Unknown forces are controlling my bank account magically",POSSIBLY_FAKE
+"Someone is using telepathy to access my passwords",POSSIBLY_FAKE
+"WiFi waves are controlling my actions",POSSIBLY_FAKE
+"Hidden cameras are installed inside my brain",POSSIBLY_FAKE
+"My pet is spying on me for foreign intelligence agency",POSSIBLY_FAKE
+"Time travelers are altering my phone data",POSSIBLY_FAKE
+"Supernatural beings transferred money from my account",POSSIBLY_FAKE
+"My neighbor controls weather to disturb me",POSSIBLY_FAKE
+"My debit card was used for unauthorized online purchases",LIKELY_GENUINE
+"I lost my mobile phone in the metro station yesterday evening",LIKELY_GENUINE
+"Someone transferred money from my UPI account without consent",LIKELY_GENUINE
+"I was cheated through an online job offer scam",LIKELY_GENUINE
+"My Instagram account was hacked and inappropriate posts were uploaded",LIKELY_GENUINE
+"I received a threatening message demanding ransom money",LIKELY_GENUINE
+"Fraudster called pretending to be bank officer and took my OTP",LIKELY_GENUINE
+"My Aadhaar details were misused to open fake bank account",LIKELY_GENUINE
+"I was blackmailed using morphed photos on social media",LIKELY_GENUINE
+"My laptop was stolen from my hostel room",LIKELY_GENUINE
+"Unauthorized withdrawal happened from ATM near city center",LIKELY_GENUINE
+"Online seller took advance payment but did not deliver goods",LIKELY_GENUINE
+"I was scammed through fake cryptocurrency investment scheme",LIKELY_GENUINE
+"Unknown person accessed my net banking and changed password",LIKELY_GENUINE
+"Fake customer care number tricked me into sharing card details",LIKELY_GENUINE
+"My car was stolen from parking lot at 11 PM",LIKELY_GENUINE
+"I received fake KYC update link and lost money",LIKELY_GENUINE
+"Someone created fake WhatsApp profile using my identity",LIKELY_GENUINE
+"My PAN card details were used fraudulently for loan application",LIKELY_GENUINE
+"Money deducted multiple times due to fraudulent transaction",LIKELY_GENUINE
+"Fraudster sent phishing email asking to reset banking password",LIKELY_GENUINE
+"My account was blocked after suspicious login attempt",LIKELY_GENUINE
+"Unknown caller threatened to leak my private information",LIKELY_GENUINE
+"Fake shopping app charged my credit card twice",LIKELY_GENUINE
+"My office bag was stolen from bus during travel",LIKELY_GENUINE
+"Someone withdrew cash from my account using cloned ATM card",LIKELY_GENUINE
+"I was cheated through online matrimonial scam",LIKELY_GENUINE
+"My property documents were forged without my knowledge",LIKELY_GENUINE
+"I received fake courier message containing malware link",LIKELY_GENUINE
+"Scammer impersonated police officer and demanded money",LIKELY_GENUINE
+"My neighbour is using secret rays to control my thoughts",POSSIBLY_FAKE
+"Aliens are sending signals through my television",POSSIBLY_FAKE
+"Government implanted a tracking chip in my body",POSSIBLY_FAKE
+"My phone battery drains because of hidden spy satellites",POSSIBLY_FAKE
+"Invisible forces are transferring money from my account",POSSIBLY_FAKE
+"Time travelers hacked my social media account",POSSIBLY_FAKE
+"Secret society is manipulating my bank transactions",POSSIBLY_FAKE
+"Unknown spirits are controlling my internet connection",POSSIBLY_FAKE
+"My dreams are being monitored by foreign agencies",POSSIBLY_FAKE
+"Radio waves are stealing my personal information",POSSIBLY_FAKE
+"My neighbour hacked my brain using Bluetooth",POSSIBLY_FAKE
+"Hidden cameras are installed inside my thoughts",POSSIBLY_FAKE
+"Magic energy is draining my wallet balance",POSSIBLY_FAKE
+"Someone changed my bank balance using telepathy",POSSIBLY_FAKE
+"Secret satellites are following my movements daily",POSSIBLY_FAKE
+"Unknown hackers from another dimension accessed my account",POSSIBLY_FAKE
+"My shadow is spying on me for intelligence agency",POSSIBLY_FAKE
+"Invisible hackers are living inside my router",POSSIBLY_FAKE
+"My neighbour is using black magic to steal my money",POSSIBLY_FAKE
+"Government robots are monitoring my private life",POSSIBLY_FAKE
+"My thoughts are uploaded to internet without permission",POSSIBLY_FAKE
+"Hidden signals from space are deleting my data",POSSIBLY_FAKE
+"Secret microchips inside currency notes tracking me",POSSIBLY_FAKE
+"Wireless waves are controlling my banking app",POSSIBLY_FAKE
+"Aliens transferred funds from my account last night",POSSIBLY_FAKE
