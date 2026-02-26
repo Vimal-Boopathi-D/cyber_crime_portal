@@ -22,6 +22,7 @@ import com.cyber.portal.sharedResources.enums.IncidentStatus;
 import com.cyber.portal.sharedResources.enums.Label;
 import com.cyber.portal.sharedResources.exception.PortalException;
 import com.cyber.portal.sharedResources.service.NotificationService;
+import com.cyber.portal.sharedResources.service.impl.WekaPredictionService;
 import com.cyber.portal.sharedResources.util.TextUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
@@ -47,6 +48,7 @@ public class ComplaintServiceImpl implements ComplaintService {
     private final FakeKeywordConfig fakeKeywordConfig;
     private final KeywordWeightConfig keywordWeightConfig;
     private final AiPredictionService aiPredictionService;
+    private final WekaPredictionService wekaPredictionService;
 
     @Override
     @Transactional
@@ -60,7 +62,6 @@ public class ComplaintServiceImpl implements ComplaintService {
         complaint.setCategory(complaintRequestDTO.getCategory());
         complaint.setIncidentDate(complaintRequestDTO.getIncidentDate());
         complaint.setIncidentLocation(complaintRequestDTO.getIncidentLocation());
-       // complaint.setReasonForDelay(complaintRequestDTO.getReasonForDelay());
         complaint.setState(complaintRequestDTO.getState());
         complaint.setDistrict(complaintRequestDTO.getDistrict());
         complaint.setPoliceStation(complaintRequestDTO.getPoliceStation());
@@ -70,8 +71,9 @@ public class ComplaintServiceImpl implements ComplaintService {
         complaint.setSuspectContact(complaintRequestDTO.getSuspectContact());
         complaint.setSuspectIdentificationDetails(complaintRequestDTO.getSuspectIdentificationDetails());
         complaint.setSuspectAdditionalInfo(complaintRequestDTO.getSuspectAdditionalInfo());
-        complaint.setLabel(analyze(complaintRequestDTO.getIncidentDescription()));
-        Complaint saved = complaintRepository.save(complaint);
+        complaint.setLabel(wekaPredictionService.predict(
+                complaintRequestDTO.getIncidentDescription()
+        ));        Complaint saved = complaintRepository.save(complaint);
         saveTimeline(saved, IncidentStatus.SUBMITTED, "Initial Submission", "Citizen");
         notificationService.sendStatusUpdate(saved.getId());
         return ackNo;
@@ -80,6 +82,7 @@ public class ComplaintServiceImpl implements ComplaintService {
     public Label analyze(String text) {
         return aiPredictionService.getIncidentLabel(text);
     }
+
 
     @Override
     public ComplaintDto getComplaintByAckNo(String ack) {

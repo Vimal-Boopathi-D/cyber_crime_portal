@@ -30,7 +30,7 @@ public class Complaint {
     private ComplaintCategory category;
 
     private LocalDateTime incidentDate;
-    
+
 //    @Column(columnDefinition = "TEXT")
 //    private String reasonForDelay;
 
