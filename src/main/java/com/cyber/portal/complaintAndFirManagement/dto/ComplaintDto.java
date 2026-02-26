@@ -2,6 +2,7 @@ package com.cyber.portal.complaintAndFirManagement.dto;
 
 import com.cyber.portal.sharedResources.enums.ComplaintCategory;
 import com.cyber.portal.sharedResources.enums.IncidentStatus;
+import com.cyber.portal.sharedResources.enums.Label;
 import com.cyber.portal.sharedResources.enums.State;
 import lombok.Builder;
 import lombok.Data;
@@ -38,7 +39,7 @@ public class ComplaintDto {
     private String firNumber;
     private String officerName;
     private String officerState;
-    private String label;
+    private Label label;
     private Double percentage;
 
     private LocalDateTime createdAt;

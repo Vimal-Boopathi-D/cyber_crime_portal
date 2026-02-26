@@ -3,6 +3,7 @@ package com.cyber.portal.complaintAndFirManagement.entity;
 import com.cyber.portal.citizenManagement.entity.Citizen;
 import com.cyber.portal.sharedResources.enums.ComplaintCategory;
 import com.cyber.portal.sharedResources.enums.IncidentStatus;
+import com.cyber.portal.sharedResources.enums.Label;
 import com.cyber.portal.sharedResources.enums.State;
 import jakarta.persistence.*;
 import lombok.*;
@@ -42,7 +43,10 @@ public class Complaint {
     private State state;
     private String district;
     private String policeStation;
-    private String label;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "label")
+    private Label label;
     private Double percentage;
 
     @Enumerated(EnumType.STRING)
